@@ -3,7 +3,7 @@
 </script>
 
 <svg
-	class="inline-block h-auto max-h-full w-full"
+	class="inline-block h-full w-auto max-w-full"
 	viewBox="0 0 199 64"
 	fill={color ? color : 'currentcolor'}
 	xmlns="http://www.w3.org/2000/svg"

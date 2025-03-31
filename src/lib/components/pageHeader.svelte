@@ -5,10 +5,10 @@
 	const { children, prop = 'kea' }: { children?: any; prop?: tokens } = $props();
 </script>
 
-<div class="header-wrapper mask-rough mask-bottom relative overflow-clip" class:pb-15={prop}>
+<div class="header-wrapper relative overflow-clip" class:pb-15={prop}>
 	<div class="header-bg">
 		<img
-			src="/art/hero.png"
+			src="/art/hero-banner-alt.webp"
 			alt=""
 			class="absolute top-0 left-0 h-full w-full object-cover object-bottom"
 		/>
@@ -25,7 +25,7 @@
 </div>
 {#if prop}
 	<div
-		class="bird-wrapper ease-bounce absolute left-20 size-0 -translate-y-1/2 drop-shadow-sm transition duration-300 hover:-rotate-12 hover:duration-500 md:size-40 lg:size-60"
+		class="bird-wrapper ease-bounce absolute left-20 z-20 size-0 -translate-y-1/2 drop-shadow-sm transition duration-300 hover:-rotate-12 hover:duration-500 md:size-40 lg:size-60"
 	>
 		<img
 			src="/art/{prop}.png"

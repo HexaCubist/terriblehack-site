@@ -13,7 +13,7 @@
 	{/if}
 	<div class="navbar relative container mx-auto px-4" class:text-white={backdrop}>
 		<div class="navbar-start">
-			<a class="btn btn-link px-0 text-xl text-white" href="/">
+			<a class="btn btn-link h-14 px-0 text-xl text-white" href="/">
 				<Logo />
 			</a>
 		</div>
