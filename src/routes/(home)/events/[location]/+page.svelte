@@ -47,7 +47,7 @@
 				<div class="prose flex flex-col gap-2 text-base">
 					{@html event.details.blurb}
 				</div>
-				<div class="card-actions -mx-6 mt-2 -mb-6 grid grid-cols-2 gap-0 text-lg">
+				<div class="card-actions -mx-6 mt-2 -mb-6 grid grid-cols-2 gap-0 text-base">
 					<div class="border-base-300 flex border-t border-r p-4">
 						<Icon icon="material-symbols:map-search-outline" class="size-6" />
 						<p class="ml-4">{event.location}</p>
@@ -56,7 +56,7 @@
 						<Icon icon="material-symbols:attach-money-rounded" class="size-6" />
 						<p class="ml-4">{event.details.cost}</p>
 					</div>
-					{#if event.registrations || true}
+					{#if event.registrations}
 						<a
 							class="border-base-300 bg-accent hover:bg-secondary text-accent-content hover:text-secondary-content col-span-2 flex border-t p-4 transition"
 							href={event.registrations || '#'}
@@ -73,4 +73,7 @@
 			<img src="/art/raccoon-hero.png" alt="" class="max-w-sm" />
 		</div>
 	</div>
+	<h3 class="max-w-prose text-3xl font-bold text-balance">
+		Join us in {event.location} for a celebration of Terrible Ideas!
+	</h3>
 </div>
