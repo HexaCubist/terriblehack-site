@@ -10,17 +10,19 @@
 </script>
 
 {#each items as item}
-	<div class="mx-auto my-8 flex w-auto items-center justify-center gap-8">
+	<div
+		class="mx-auto my-4 flex w-auto flex-col items-center justify-center gap-4 sm:my-8 sm:flex-row sm:gap-8"
+	>
 		<div class="">
 			<div
-				class="bg-base-content text-base-100 flex h-16 w-16 items-center justify-center rounded-full"
+				class="bg-base-content text-base-100 flex size-10 items-center justify-center rounded-full sm:size-16"
 			>
-				<Icon icon={item.icon} class="h-8 w-8" />
+				<Icon icon={item.icon} class="size-6 sm:size-8" />
 			</div>
 		</div>
 		<div class="max-w-prose grow">
 			<h3 class="font-bold">{item.title}</h3>
-			<p>{item.description}</p>
+			<p class="text-sm sm:text-base">{item.description}</p>
 		</div>
 	</div>
 {/each}

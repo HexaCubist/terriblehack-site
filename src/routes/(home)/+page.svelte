@@ -52,9 +52,11 @@
 </script>
 
 <PageHeader>
-	<div class="max-w-prose py-4 pb-20">
-		<h2 class="mb-2 text-4xl font-black">A weekend adventure in creating strange things✨</h2>
-		<p class="max-w-sm text-lg">
+	<div class="max-w-prose py-4 sm:pb-20">
+		<h2 class="mb-2 text-2xl font-black sm:text-4xl">
+			A weekend adventure in creating strange things✨
+		</h2>
+		<p class="max-w-sm sm:text-lg">
 			Whether it’s a funeral piñata, freemium kettle, or milk aroma diffuser, spend a weekend with
 			your friends making your worst ideas a reality!
 		</p>
@@ -79,10 +81,9 @@
 </PageHeader>
 
 <div class="mask-rough brand-gradient relative z-10 -my-4">
-	<section class="container mx-auto px-4 py-12">
-		<h2 class="text-center text-4xl font-bold">In 46 Hours, You Will:</h2>
+	<section class="container mx-auto px-4 py-8 sm:py-12">
+		<h2 class="pb-2 text-center text-4xl font-bold sm:pb-0">In 46 Hours, You Will:</h2>
 		<FeatureList
-			title="In 46 Hours, You Will:"
 			items={[
 				{
 					icon: 'material-symbols:lightbulb-outline-rounded',
@@ -103,7 +104,7 @@
 				}
 			]}
 		/>
-		<div class="flex items-center justify-center gap-4">
+		<div class="flex flex-wrap items-center justify-center gap-4">
 			<a href="/about" class="btn btn-lg btn-accent">More about the event</a>
 			<a href="/register" class="btn btn-lg btn-secondary uppercase">Register!!!</a>
 		</div>
@@ -129,7 +130,7 @@
 		{#each featured_projects.slice(0, 3) as project, i}
 			<div class="project grid grid-cols-6 gap-4 md:gap-8">
 				<div
-					class="order-1 col-span-6 flex flex-col justify-center sm:col-span-3 md:col-span-4"
+					class="order-1 col-span-6 flex flex-col justify-center sm:col-span-4 md:col-span-4"
 					class:md:order-0={i % 2 === 0}
 				>
 					<h2 class="-mt-2 max-w-prose text-xl leading-none font-bold">{project.title}</h2>
@@ -138,11 +139,11 @@
 						{project.description}
 					</p>
 				</div>
-				<a href="/projects/{project.slug}" class="col-span-6 sm:col-span-3 md:col-span-2">
+				<a href="/projects/{project.slug}" class="col-span-6 sm:col-span-2 md:col-span-2">
 					<img
 						src={project.image}
 						alt={project.title}
-						class=" aspect-square w-full rounded-xl object-cover shadow"
+						class=" aspect-video w-full rounded-xl object-cover shadow sm:aspect-square"
 					/>
 				</a>
 			</div>
@@ -150,16 +151,17 @@
 		<img
 			src="/art/raccoon.webp"
 			alt="Raccoon"
-			class="raccoon ease-bounce absolute -right-10 bottom-0 size-60 translate-1/6 object-contain transition duration-300 hover:rotate-12 hover:duration-500"
+			class="raccoon ease-bounce absolute -right-10 bottom-0 hidden size-60 translate-1/6 object-contain transition duration-300 hover:rotate-12 hover:duration-500 md:block"
 		/>
 	</div>
 	<div
-		class="relative z-0 -mt-[500px] -mb-[250px] h-[800px] w-full bg-contain bg-repeat-x"
+		class="w-[calc(100% + 2rem)] relative z-0 -mx-4 -mt-[500px] -mb-[320px] h-[800px] bg-repeat-x sm:-mb-[250px]"
+		style:background-size="auto 800px"
 		style:background-image="url('/art/dark-footer-v3.webp')"
 	></div>
 	<!-- Extra project gallery -->
-	<div class="relative container mx-auto px-4 text-center">
-		<div class="grid grid-cols-4 gap-8">
+	<div class="relative mx-auto hidden w-full max-w-6xl text-center sm:block md:px-4">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:gap-8">
 			{#each featured_projects.slice(3, 3 + 4) as project, i}
 				<a
 					class="project group relative aspect-square w-full overflow-clip rounded-xl text-white shadow"
@@ -174,7 +176,7 @@
 						class="absolute inset-0 h-[200%] bg-gradient-to-t from-black/80 from-50% to-black/0 transition duration-300 group-hover:-translate-y-20"
 					></div>
 					<div class="absolute bottom-0 left-0 flex w-full items-center justify-between px-4 py-3">
-						<h3 class="text-xl font-semibold transition-transform group-hover:underline">
+						<h3 class="text-sm font-semibold transition-transform group-hover:underline lg:text-xl">
 							{project.title}
 						</h3>
 						<span
@@ -191,7 +193,7 @@
 	</div>
 	<div class="container mx-auto">
 		<footer
-			class="bg-base-100 text-base-content rounded-box brand-gradient relative z-10 m-4 my-8 rounded p-8 pb-6 text-center"
+			class="bg-base-100 text-base-content rounded-box brand-gradient relative z-10 my-8 rounded p-8 pb-6 text-center"
 		>
 			<div class="h-14 text-left">
 				<Logo />

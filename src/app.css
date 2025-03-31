@@ -62,7 +62,7 @@
 }
 
 body {
-	@apply brand-gradient min-h-screen;
+	@apply brand-gradient min-h-screen overflow-x-hidden;
 }
 .mask-rough {
 	--mask-rough: url(/masks/mask-rough-top-lg.svg), url(/masks/mask-rough-bottom-lg.svg);
@@ -70,7 +70,7 @@ body {
 	-webkit-mask-repeat: repeat-x;
 	-webkit-mask-composite: source-in;
 	mask-image: var(--mask-rough);
-	mask-size: contain;
+	mask-size: auto 100%;
 	mask-repeat: repeat-x;
 	mask-composite: intersect;
 	&.mask-bottom {
