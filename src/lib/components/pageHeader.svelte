@@ -10,7 +10,7 @@
 		<img
 			src="/art/hero-banner-alt.webp"
 			alt=""
-			class="absolute top-0 left-0 h-full w-full object-cover object-bottom"
+			class="ken-burns absolute top-0 left-0 h-full w-full object-cover object-bottom"
 		/>
 		<div
 			class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black to-transparent"

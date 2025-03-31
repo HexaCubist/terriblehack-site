@@ -80,3 +80,16 @@ body {
 		--mask-rough: url(/masks/mask-rough-top-lg.svg);
 	}
 }
+
+@utility ken-burns {
+	animation: ken-burns 20s infinite alternate ease-out;
+}
+
+@keyframes ken-burns {
+	0% {
+		transform: scale(1) translate(0, 0);
+	}
+	100% {
+		transform: scale(1.2) translate(0, 0);
+	}
+}
