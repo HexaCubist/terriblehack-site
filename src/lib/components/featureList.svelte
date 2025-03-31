@@ -10,12 +10,10 @@
 </script>
 
 {#each items as item}
-	<div
-		class="mx-auto my-4 flex w-auto flex-col items-center justify-center gap-4 sm:my-8 sm:flex-row sm:gap-8"
-	>
+	<div class="mx-auto my-4 flex w-auto flex-row items-center justify-center gap-4 sm:my-8 sm:gap-8">
 		<div class="">
 			<div
-				class="bg-base-content text-base-100 flex size-10 items-center justify-center rounded-full sm:size-16"
+				class="bg-base-content text-base-100 flex h-full w-10 items-center justify-center rounded-full sm:size-16"
 			>
 				<Icon icon={item.icon} class="size-6 sm:size-8" />
 			</div>

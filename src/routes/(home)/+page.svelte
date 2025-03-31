@@ -1,57 +1,25 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Logo from '$lib/assets/logo.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
 	import Icon from '@iconify/svelte';
 
-	interface Project {
-		title: string;
-		subtitle: string;
-		description: string;
-		image: string;
-		slug: string;
-	}
-	interface extra_links {
-		title: string;
-		url: string;
-	}
+	const { events, featured_projects, extra_links } = page.data;
 
 	const year = new Date().getFullYear();
 
-	const featured_projects: Project[] = Array(10)
-		.fill(undefined)
-		.map((_, i) => ({
-			title: `Indispensable (${i + 1})`,
-			subtitle: 'It’s a gacha machine for your medication.',
-			description:
-				'Created using paper mache, cardboard, and a lot of love. This project was a hit at the 2024 event, showing just how far we can take the intersection between gambling and healthcare.',
-			image: '/art/hero.png',
-			slug: 'indispensable'
-		}));
-
-	const extra_links = [
-		{
-			title: 'Kiwijam',
-			url: 'https://kiwijam.org/'
-		},
-		{
-			title: 'UoA Maker Club',
-			url: 'https://makeuoa.nz/'
-		},
-		{
-			title: 'ICRS',
-			url: 'https://www.imperialcollegeunion.org/activities/a-to-z/robotics'
-		},
-		{
-			title: 'Questionable Research Labs',
-			url: 'https://questionable.org.nz/'
-		},
-		{ title: '48Hours NZ', url: 'https://www.48hours.co.nz/' },
-		{ title: 'Rat World', url: 'https://www.ratworldmag.com/' }
-	];
+	let timezone: undefined | string = $state(undefined);
+	$effect(() => {
+		timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	});
+	let matched_location = $derived(
+		events.findIndex((loc) => timezone && timezone.includes(loc.timezone))
+	);
+	let loc = $derived(matched_location === -1 ? undefined : events[matched_location]);
 </script>
 
-<PageHeader>
+<PageHeader animated prop="kea">
 	<div class="max-w-prose py-4 sm:pb-20">
 		<h2 class="mb-2 text-2xl font-black sm:text-4xl">
 			A weekend adventure in creating strange things✨
@@ -60,22 +28,29 @@
 			Whether it’s a funeral piñata, freemium kettle, or milk aroma diffuser, spend a weekend with
 			your friends making your worst ideas a reality!
 		</p>
-		<div class="mt-4 flex gap-2">
-			<a
-				href="/events/akl"
-				class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed mix-blend-plus-lighter"
-				>Tāmaki Makaurau</a
-			>
-			<a
-				href="/events/syd"
-				class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed mix-blend-plus-lighter"
-				>Sydney</a
-			>
-			<a
-				href="/events/lon"
-				class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed mix-blend-plus-lighter"
-				>London</a
-			>
+		<div class="mt-4 flex flex-wrap gap-2">
+			{#if loc}
+				{#if loc.registrations}
+					<a href={`/events/${loc.slug}`} class="btn btn-primary">{loc.location}: Register Now! </a>
+				{:else}
+					<a
+						href={`/events/${loc.slug}`}
+						class="btn btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+						class:btn-primary={!loc.registrations}
+						class:btn-outline={loc.registrations}
+						>{loc.location}: Learn More
+					</a>
+				{/if}
+			{/if}
+			{#each events as location, i}
+				{#if matched_location !== i}
+					<a
+						href={`/events/${location.slug}`}
+						class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+						>{location.location}
+					</a>
+				{/if}
+			{/each}
 		</div>
 	</div>
 </PageHeader>
@@ -106,7 +81,17 @@
 		/>
 		<div class="flex flex-wrap items-center justify-center gap-4">
 			<a href="/about" class="btn btn-lg btn-accent">More about the event</a>
-			<a href="/register" class="btn btn-lg btn-secondary uppercase">Register!!!</a>
+			{#if loc}
+				{#if loc.registrations}
+					<a href={loc.registrations} class="btn btn-lg btn-secondary uppercase">Register!!!</a>
+				{:else}
+					<a href="/events/{loc.slug}" class="btn btn-lg btn-secondary uppercase"
+						>{loc.location} Event</a
+					>
+				{/if}
+			{:else}
+				<a href="/events" class="btn btn-lg btn-secondary uppercase">Register!!!</a>
+			{/if}
 		</div>
 	</section>
 </div>

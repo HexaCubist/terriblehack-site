@@ -2,7 +2,7 @@
 	import Logo from '$lib/assets/logo.svelte';
 	import Icon from '@iconify/svelte';
 
-	const { backdrop = true }: { backdrop?: boolean } = $props();
+	const { backdrop = false }: { backdrop?: boolean } = $props();
 </script>
 
 <div class="navbar-wrapper relative">
@@ -13,7 +13,12 @@
 	{/if}
 	<div class="navbar relative container mx-auto px-4" class:text-white={backdrop}>
 		<div class="navbar-start">
-			<a class="btn btn-link h-14 px-0 text-xl text-white" href="/">
+			<a
+				class="btn btn-link text-x h-14 px-0"
+				class:text-white={backdrop}
+				class:text-base-content={!backdrop}
+				href="/"
+			>
 				<Logo />
 			</a>
 		</div>
