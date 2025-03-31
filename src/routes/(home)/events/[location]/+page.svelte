@@ -26,11 +26,8 @@
 />
 <div class="relative z-10">
 	<Menu />
-	<div class="container mx-auto grid grid-cols-2 gap-4 px-4">
-		<div
-			class="card bg-base-100 overflow-clip border-t-3 shadow-sm"
-			style:border-top-color={event.color}
-		>
+	<div class="container mx-auto grid w-screen max-w-7xl gap-4 px-4 md:grid-cols-2">
+		<div class="card bg-base-100 border-t-3 shadow-sm" style:border-top-color={event.color}>
 			<div class="card-body">
 				<h2 class="card-title my-0 text-5xl leading-none">{event.name}</h2>
 				<p class="text-2xl">
@@ -73,7 +70,17 @@
 			<img src="/art/raccoon-hero.png" alt="" class="max-w-sm" />
 		</div>
 	</div>
-	<h3 class="max-w-prose text-3xl font-bold text-balance">
-		Join us in {event.location} for a celebration of Terrible Ideas!
-	</h3>
+	<div class="my-10 text-center">
+		<h3 class="mx-auto max-w-prose text-center text-3xl font-bold text-balance">
+			Join us in {event.location} for a celebration of Terrible Ideas!
+		</h3>
+		{#if event.register || true}
+			<a href={event.register} class="btn btn-lg btn-primary mx-auto mt-4"> Register Now </a>
+		{/if}
+	</div>
+	<div class="card bg-base-100 overflow-clip shadow-sm">
+		<div class="card-title">
+			<h2 class="text-3xl">Event Details</h2>
+		</div>
+	</div>
 </div>
