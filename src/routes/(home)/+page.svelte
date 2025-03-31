@@ -4,6 +4,8 @@
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
 	import Icon from '@iconify/svelte';
+	import { DateTime } from 'luxon';
+	import { onMount } from 'svelte';
 
 	const { events, featured_projects, extra_links } = page.data;
 
@@ -17,41 +19,101 @@
 		events.findIndex((loc) => timezone && timezone.includes(loc.timezone))
 	);
 	let loc = $derived(matched_location === -1 ? undefined : events[matched_location]);
+	let locStartDate = $derived(loc && DateTime.fromJSDate(loc.start));
+	let locEndDate = $derived(loc && DateTime.fromJSDate(loc.end));
+	// Get time till event starts, or till end if it's already started, or time since it ended
+	let currentTime = $state(DateTime.local());
+	onMount(() => {
+		const interval = setInterval(() => {
+			currentTime = DateTime.local();
+		}, 1000);
+		return () => clearInterval(interval);
+	});
+	let countdown = $derived.by(() => {
+		if (!locStartDate || !locEndDate) return;
+		if (currentTime < locStartDate) {
+			return locStartDate.diff(currentTime, ['days', 'hours', 'minutes', 'seconds']);
+		} else if (currentTime < locEndDate) {
+			return locEndDate.diff(currentTime, ['days', 'hours', 'minutes', 'seconds']);
+		} else {
+			return currentTime.diff(locEndDate, ['days', 'hours', 'minutes', 'seconds']);
+		}
+	});
 </script>
 
 <PageHeader animated prop="kea">
-	<div class="max-w-prose py-4 sm:pb-20">
-		<h2 class="mb-2 text-2xl font-black sm:text-4xl">
-			A weekend adventure in creating strange things✨
-		</h2>
-		<p class="max-w-sm sm:text-lg">
-			Whether it’s a funeral piñata, freemium kettle, or milk aroma diffuser, spend a weekend with
-			your friends making your worst ideas a reality!
-		</p>
-		<div class="mt-4 flex flex-wrap gap-2">
-			{#if loc}
-				{#if loc.registrations}
-					<a href={`/events/${loc.slug}`} class="btn btn-primary">{loc.location}: Register Now! </a>
-				{:else}
-					<a
-						href={`/events/${loc.slug}`}
-						class="btn btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
-						class:btn-primary={!loc.registrations}
-						class:btn-outline={loc.registrations}
-						>{loc.location}: Learn More
-					</a>
+	<div class="flex justify-between">
+		<div class="max-w-prose py-4 sm:pb-20">
+			<h2 class="mb-2 text-2xl font-black sm:text-4xl">
+				A weekend adventure in creating strange things✨
+			</h2>
+			<p class="max-w-sm sm:text-lg">
+				Whether it’s a funeral piñata, freemium kettle, or milk aroma diffuser, spend a weekend with
+				your friends making your worst ideas a reality!
+			</p>
+			<div class="mt-4 flex flex-wrap gap-2">
+				{#if loc}
+					{#if loc.registrations}
+						<a href={`/events/${loc.slug}`} class="btn btn-primary"
+							>{loc.location}: Register Now!
+						</a>
+					{:else}
+						<a
+							href={`/events/${loc.slug}`}
+							class="btn btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+							class:btn-primary={!loc.registrations}
+							class:btn-outline={loc.registrations}
+							>{loc.location}: Learn More
+						</a>
+					{/if}
 				{/if}
-			{/if}
-			{#each events as location, i}
-				{#if matched_location !== i}
-					<a
-						href={`/events/${location.slug}`}
-						class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
-						>{location.location}
-					</a>
-				{/if}
-			{/each}
+				{#each events as location, i}
+					{#if matched_location !== i}
+						<a
+							href={`/events/${location.slug}`}
+							class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+							>{location.location}
+						</a>
+					{/if}
+				{/each}
+			</div>
 		</div>
+		{#if countdown}
+			<div class="-mt-8 flex grow flex-col items-center justify-center">
+				<p class="text-[4rem] font-bold" style:font-variant="tabular-nums">
+					{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
+						<Icon
+							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+							class="mb-2 inline size-[4rem]"
+						></Icon>
+						{countdown.toFormat('M')} Month{countdown.months !== 1 ? 's' : ''}
+					{:else if countdown.days > 7}
+						<Icon
+							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+							class="mb-2 inline size-[4rem]"
+						></Icon>
+						{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
+					{:else if countdown.days > 3}
+						<Icon
+							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+							class="mb-2 inline size-[4rem]"
+						></Icon>
+						{countdown.toFormat('d')} Day{countdown.days !== 1 ? 's' : ''}
+					{:else}
+						{countdown.toFormat('hh:mm:ss')}
+					{/if}
+				</p>
+				<p class="text-xl tracking-wider">
+					{#if currentTime < locStartDate}
+						Till {loc?.location} Event Begins
+					{:else if currentTime < locEndDate}
+						Till {loc?.location} Event Ends
+					{:else}
+						Since: {loc?.location} Ended
+					{/if}
+				</p>
+			</div>
+		{/if}
 	</div>
 </PageHeader>
 
