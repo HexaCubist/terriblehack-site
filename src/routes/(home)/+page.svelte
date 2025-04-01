@@ -3,6 +3,7 @@
 	import Logo from '$lib/assets/logo.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
+	import Cta from '../../lib/components/cta.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
@@ -144,17 +145,7 @@
 		/>
 		<div class="flex flex-wrap items-center justify-center gap-4">
 			<a href="/about" class="btn btn-lg btn-accent">More about the event</a>
-			{#if loc}
-				{#if loc.registrations}
-					<a href={loc.registrations} class="btn btn-lg btn-secondary uppercase">Register!!!</a>
-				{:else}
-					<a href="/events/{loc.slug}" class="btn btn-lg btn-secondary uppercase"
-						>{loc.location} Event</a
-					>
-				{/if}
-			{:else}
-				<a href="/events" class="btn btn-lg btn-secondary uppercase">Register!!!</a>
-			{/if}
+			<Cta {loc} />
 		</div>
 	</section>
 </div>
@@ -238,8 +229,9 @@
 			{/each}
 		</div>
 	</div>
-	<div class="relative text-center">
-		<a href="/projects" class="btn btn-lg btn-accent btn-outline relative mt-8"> More Projects</a>
+	<div class="relative mt-8 flex flex-wrap items-center justify-center gap-4">
+		<a href="/projects" class="btn btn-lg btn-accent btn-outline relative"> More Projects</a>
+		<Cta {loc} color="primary" />
 	</div>
 	<div class="container mx-auto">
 		<footer
