@@ -237,7 +237,9 @@
 				</a>
 			{/each}
 		</div>
-		<a href="/projects" class="btn btn-lg btn-accent btn-outline mt-8"> More Projects</a>
+	</div>
+	<div class="relative text-center">
+		<a href="/projects" class="btn btn-lg btn-accent btn-outline relative mt-8"> More Projects</a>
 	</div>
 	<div class="container mx-auto">
 		<footer
