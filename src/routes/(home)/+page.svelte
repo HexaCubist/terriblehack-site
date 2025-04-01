@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { env } from '$env/dynamic/public';
 	import Logo from '$lib/assets/logo.svelte';
 	import EventDate from '$lib/components/eventDate.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
@@ -84,40 +85,64 @@
 			</div>
 		</div>
 		{#if countdown && loc}
-			<div class="flex grow flex-col items-center justify-center lg:-mt-8">
-				<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
-					{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
-						<Icon
-							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-[0.2em] inline size-[1em]"
-						></Icon>
-						{countdown.toFormat('M')} Month{countdown.months !== 1 ? 's' : ''}
-					{:else if countdown.days > 7}
-						<Icon
-							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-[0.2em] inline size-[1em]"
-						></Icon>
-						{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
-					{:else if countdown.days > 3}
-						<Icon
-							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-[0.2em] inline size-[1em]"
-						></Icon>
-						{countdown.toFormat('d')} Day{countdown.days !== 1 ? 's' : ''}
-					{:else}
-						{countdown.toFormat('hh:mm:ss')}
-					{/if}
-				</p>
-				<p class="text-xl tracking-wider">
+			{#if locEndDate && locEndDate < currentTime}
+				{#if locEndDate.diff(currentTime, 'days').days > -50}
+					<div
+						class=" hidden grow flex-col items-center justify-center text-center drop-shadow lg:-mt-8 lg:flex"
+					>
+						<div class="mx-auto w-60">
+							<Logo />
+						</div>
+						<p class="text-xl tracking-wider">Thanks for joining! See you next time 💖</p>
+						<a href={env.PUBLIC_HOST} target="_blank" class="btn btn-lg btn-accent btn-sm mt-4"
+							>Submit Project</a
+						>
+					</div>
+				{/if}
+			{:else}
+				<div class="flex grow flex-col items-center justify-center lg:-mt-8">
+					<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
+						{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
+							<Icon
+								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+								class="mb-[0.2em] inline size-[1em]"
+							></Icon>
+							{countdown.toFormat('M')} Month{countdown.months !== 1 ? 's' : ''}
+						{:else if countdown.days > 7}
+							<Icon
+								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+								class="mb-[0.2em] inline size-[1em]"
+							></Icon>
+							{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
+						{:else if countdown.days > 3}
+							<Icon
+								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
+								class="mb-[0.2em] inline size-[1em]"
+							></Icon>
+							{countdown.toFormat('d')} Day{countdown.days !== 1 ? 's' : ''}
+						{:else}
+							{countdown.toFormat('hh:mm:ss')}
+						{/if}
+					</p>
 					{#if locStartDate && currentTime < locStartDate}
-						{loc?.location} (<EventDate event={loc} />)
+						<p class="text-xl tracking-wider">
+							{loc?.location} (<EventDate event={loc} />)
+						</p>
 					{:else if locEndDate && currentTime < locEndDate}
-						Till {loc?.location} Event Ends
+						<p class="text-xl tracking-wider">
+							Left to submit in {loc?.location}!
+						</p>
+
+						<a href={env.PUBLIC_HOST} target="_blank" class="btn btn-lg btn-accent btn-sm mt-4"
+							>Submit Project</a
+						>
 					{:else}
-						Since: {loc?.location} Ended
+						<p class="text-xl tracking-wider">
+							Since: {loc?.location} Ended
+						</p>
 					{/if}
-				</p>
-			</div>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </PageHeader>
