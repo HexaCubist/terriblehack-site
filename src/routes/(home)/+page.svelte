@@ -122,6 +122,16 @@
 
 <div class="mask-rough brand-gradient relative z-10 -my-4">
 	<section class="container mx-auto px-4 py-8 sm:py-12">
+		<img
+			src="/art/lines-2.png"
+			class="absolute -top-[50px] -left-[300px] hidden h-[700px] opacity-5 md:block lg:-left-[100px]"
+			alt=""
+		/>
+		<img
+			src="/art/lines-3.png"
+			class="absolute -top-[50px] -right-[300px] hidden h-[900px] opacity-5 md:block lg:-right-[200px]"
+			alt=""
+		/>
 		<h2 class="pb-2 text-center text-4xl font-bold sm:pb-0">In 46 Hours, You Will:</h2>
 		<FeatureList
 			items={[
