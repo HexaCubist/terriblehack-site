@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import EventDate from '$lib/components/eventDate.svelte';
 	import Menu from '$lib/components/menu.svelte';
+	import PageFooter from '$lib/components/pageFooter.svelte';
 	import { canShowDate } from '$lib/directusClient';
 	import type { Schema } from '$lib/server/.directus/generated/client';
 	import Icon from '@iconify/svelte';
@@ -93,3 +94,5 @@
 		</div>
 	</div>
 </div>
+
+<PageFooter />
