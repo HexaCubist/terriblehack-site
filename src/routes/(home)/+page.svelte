@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		{#if countdown}
-			<div class="-mt-8 flex grow flex-col items-center justify-center">
+			<div class="flex grow flex-col items-center justify-center lg:-mt-8">
 				<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
 					{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
 						<Icon
@@ -106,9 +106,9 @@
 					{/if}
 				</p>
 				<p class="text-xl tracking-wider">
-					{#if currentTime < locStartDate}
+					{#if locStartDate && currentTime < locStartDate}
 						Till {loc?.location} Event Begins
-					{:else if currentTime < locEndDate}
+					{:else if locEndDate && currentTime < locEndDate}
 						Till {loc?.location} Event Ends
 					{:else}
 						Since: {loc?.location} Ended
