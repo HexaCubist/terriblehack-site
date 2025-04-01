@@ -32,7 +32,7 @@
 	</div>
 	<div class="header-contents relative z-10">
 		<Menu backdrop />
-		<div class="container mx-auto px-4 text-white">
+		<div class="container mx-auto px-6 text-white">
 			{@render children?.()}
 		</div>
 	</div>

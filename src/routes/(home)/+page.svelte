@@ -7,7 +7,8 @@
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
 
-	const { events, featured_projects, extra_links } = page.data;
+	const { events, featured_projects, globalData } = page.data;
+	const { extra_links } = globalData;
 
 	const year = new Date().getFullYear();
 
@@ -42,25 +43,25 @@
 </script>
 
 <PageHeader animated prop="kea">
-	<div class="flex justify-between">
-		<div class="max-w-prose py-4 sm:pb-20">
-			<h2 class="mb-2 text-2xl font-black sm:text-4xl">
+	<div class="flex flex-wrap justify-center gap-8 lg:justify-between">
+		<div class="max-w-prose grow basis-lg py-4 text-justify sm:text-center lg:pb-20 lg:text-left">
+			<h2 class="mb-2 text-left text-2xl font-black sm:text-center sm:text-4xl lg:text-left">
 				A weekend adventure in creating strange things✨
 			</h2>
-			<p class="max-w-sm sm:text-lg">
+			<p class="sm:max-w-prose sm:text-lg lg:max-w-sm">
 				Whether it’s a funeral piñata, freemium kettle, or milk aroma diffuser, spend a weekend with
 				your friends making your worst ideas a reality!
 			</p>
-			<div class="mt-4 flex flex-wrap gap-2">
+			<div class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
 				{#if loc}
 					{#if loc.registrations}
-						<a href={`/events/${loc.slug}`} class="btn btn-primary"
+						<a href={`/events/${loc.slug}`} class="btn btn-primary block w-full sm:w-auto"
 							>{loc.location}: Register Now!
 						</a>
 					{:else}
 						<a
 							href={`/events/${loc.slug}`}
-							class="btn btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+							class="btn btn-[white] w-full bg-gradient-to-tr from-white/20 to-white/40 bg-fixed sm:w-auto"
 							class:btn-primary={!loc.registrations}
 							class:btn-outline={loc.registrations}
 							>{loc.location}: Learn More
@@ -71,7 +72,7 @@
 					{#if matched_location !== i}
 						<a
 							href={`/events/${location.slug}`}
-							class="btn btn-outline btn-[white] bg-gradient-to-tr from-white/20 to-white/40 bg-fixed"
+							class="btn btn-outline btn-[white] grow bg-gradient-to-tr from-white/20 to-white/40 bg-fixed sm:grow-0"
 							>{location.location}
 						</a>
 					{/if}
@@ -80,23 +81,23 @@
 		</div>
 		{#if countdown}
 			<div class="-mt-8 flex grow flex-col items-center justify-center">
-				<p class="text-[4rem] font-bold" style:font-variant="tabular-nums">
+				<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
 					{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
 						<Icon
 							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-2 inline size-[4rem]"
+							class="mb-[0.2em] inline size-[1em]"
 						></Icon>
 						{countdown.toFormat('M')} Month{countdown.months !== 1 ? 's' : ''}
 					{:else if countdown.days > 7}
 						<Icon
 							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-2 inline size-[4rem]"
+							class="mb-[0.2em] inline size-[1em]"
 						></Icon>
 						{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
 					{:else if countdown.days > 3}
 						<Icon
 							icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-							class="mb-2 inline size-[4rem]"
+							class="mb-[0.2em] inline size-[1em]"
 						></Icon>
 						{countdown.toFormat('d')} Day{countdown.days !== 1 ? 's' : ''}
 					{:else}
@@ -242,11 +243,11 @@
 		<footer
 			class="bg-base-100 text-base-content rounded-box brand-gradient relative z-10 my-8 rounded p-8 pb-6 text-center"
 		>
-			<div class="h-14 text-left">
+			<div class="h-14 text-center lg:text-left">
 				<Logo />
 			</div>
 			<h2 class="text-2xl font-semibold">Other Cool Events & Communities</h2>
-			<ul class="mt-4 flex flex-wrap items-center justify-center gap-4">
+			<ul class="mt-4 flex flex-wrap items-center justify-center gap-4 sm:px-8">
 				{#each extra_links as link, i}
 					<li>
 						<a href={link.url} class="font-semibold text-balance underline">{link.title}</a>
