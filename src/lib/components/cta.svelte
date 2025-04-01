@@ -1,16 +1,17 @@
 <script lang="ts">
-	import type { EventLocation } from '$lib/models';
+	import { canShowDate } from '$lib/directusClient';
+	import type { Schema } from '$lib/server/.directus/generated/client';
 
 	let {
 		loc,
 		color = 'secondary'
-	}: { loc?: EventLocation; color?: 'primary' | 'secondary' | 'accent' } = $props();
+	}: { loc?: Schema['events'][0]; color?: 'primary' | 'secondary' | 'accent' } = $props();
 </script>
 
 {#if loc}
-	{#if loc.registrations}
+	{#if canShowDate(loc)}
 		<a
-			href={loc.registrations}
+			href={loc.register_link}
 			class="btn btn-lg uppercase"
 			class:btn-primary={color === 'primary'}
 			class:btn-secondary={color === 'secondary'}

@@ -14,11 +14,13 @@
 		"lint": "prettier --check ."
 	},
 	"devDependencies": {
+		"@directus/sdk": "^19.1.0",
 		"@fontsource-variable/manrope": "^5.2.5",
 		"@iconify/svelte": "^4.2.0",
 		"@sveltejs/adapter-cloudflare": "^5.0.1",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.0.0",
 		"@types/luxon": "^3.4.2",
 		"daisyui": "^5.0.0",

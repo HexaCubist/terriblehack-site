@@ -4,12 +4,14 @@
 	import EventDate from '$lib/components/eventDate.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
+	import { canShowDate, filetoURL, imagePreset } from '$lib/directusClient';
 	import Cta from '../../lib/components/cta.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
 
 	const { events, featured_projects, globalData } = page.data;
+
 	const { extra_links } = globalData;
 
 	const year = new Date().getFullYear();
@@ -22,8 +24,8 @@
 		events.findIndex((loc) => timezone && timezone.includes(loc.timezone))
 	);
 	let loc = $derived(matched_location === -1 ? undefined : events[matched_location]);
-	let locStartDate = $derived(loc && DateTime.fromJSDate(loc.start));
-	let locEndDate = $derived(loc && DateTime.fromJSDate(loc.end));
+	let locStartDate = $derived(loc?.start && DateTime.fromJSDate(new Date(loc.start)));
+	let locEndDate = $derived(loc?.end && DateTime.fromJSDate(new Date(loc.end)));
 	// Get time till event starts, or till end if it's already started, or time since it ended
 	let currentTime = $state(DateTime.local());
 	onMount(() => {
@@ -56,17 +58,17 @@
 			</p>
 			<div class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
 				{#if loc}
-					{#if loc.registrations}
-						<a href={`/events/${loc.slug}`} class="btn btn-primary block w-full sm:w-auto"
-							>{loc.location}: Register Now!
+					{#if canShowDate(loc)}
+						<a href={`/events/${loc.slug}`} class="btn btn-primary w-full sm:w-auto"
+							>{loc.name}: Register Now!
 						</a>
 					{:else}
 						<a
 							href={`/events/${loc.slug}`}
 							class="btn btn-[white] w-full bg-gradient-to-tr from-white/20 to-white/40 bg-fixed sm:w-auto"
-							class:btn-primary={!loc.registrations}
-							class:btn-outline={loc.registrations}
-							>{loc.location}: Learn More
+							class:btn-primary={!canShowDate(loc)}
+							class:btn-outline={canShowDate(loc)}
+							>{loc.name}: Learn More
 						</a>
 					{/if}
 				{/if}
@@ -75,7 +77,7 @@
 						<a
 							href={`/events/${location.slug}`}
 							class="btn btn-outline btn-[white] grow bg-gradient-to-tr from-white/20 to-white/40 bg-fixed sm:grow-0"
-							>{location.location}
+							>{location.name}
 						</a>
 					{/if}
 				{/each}
@@ -185,14 +187,11 @@
 				>
 					<h2 class="-mt-2 max-w-prose text-xl leading-none font-bold">{project.title}</h2>
 					<p class="mb-1 max-w-prose text-lg italic">{project.subtitle}</p>
-					<p class="max-w-prose text-sm" class:pr-20={i % 2 === 1}>
-						{project.description}
-					</p>
 				</div>
 				<a href="/projects/{project.slug}" class="col-span-6 sm:col-span-2 md:col-span-2">
 					<img
-						src={project.image}
-						alt={project.title}
+						src={filetoURL(project.image, imagePreset.small)}
+						alt=""
 						class=" aspect-video w-full rounded-xl object-cover shadow sm:aspect-square"
 					/>
 				</a>
@@ -218,8 +217,8 @@
 					href="/projects/{project.slug}"
 				>
 					<img
-						src={project.image}
-						alt={project.title}
+						src={filetoURL(project.image, imagePreset.small)}
+						alt=""
 						class="absolute inset-0 block size-full object-cover"
 					/>
 					<div

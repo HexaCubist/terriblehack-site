@@ -2,13 +2,13 @@
 	import { page } from '$app/state';
 	import EventDate from '$lib/components/eventDate.svelte';
 	import Menu from '$lib/components/menu.svelte';
-	import type { EventLocation } from '$lib/models';
+	import { canShowDate } from '$lib/directusClient';
+	import type { Schema } from '$lib/server/.directus/generated/client';
 	import Icon from '@iconify/svelte';
-	import { json } from '@sveltejs/kit';
 	import { DateTime } from 'luxon';
-	const { event } = page.data;
-	const start = DateTime.fromJSDate(event.start);
-	const end = DateTime.fromJSDate(event.end);
+	const { event }: { event: Schema['events'][0] } = page.data as any;
+	const start = event.start && DateTime.fromJSDate(new Date(event.start));
+	const end = event.end && DateTime.fromJSDate(new Date(event.end));
 </script>
 
 <img
@@ -20,15 +20,18 @@
 <div class="relative z-10">
 	<Menu />
 	<div class="container mx-auto grid w-screen max-w-7xl gap-4 px-4 md:grid-cols-2">
-		<div class="card bg-base-100 border-t-3 shadow-sm" style:border-top-color={event.color}>
+		<div
+			class="card bg-base-100 overflow-clip border-t-3 shadow-sm"
+			style:border-top-color={event.color}
+		>
 			<div class="card-body">
 				<h2 class="card-title my-0 text-5xl leading-none">{event.name}</h2>
 				<p class="text-2xl">
 					<EventDate {event} />
 				</p>
 				<hr />
-				<div class="prose flex flex-col gap-2 text-base">
-					{@html event.details.blurb}
+				<div class="prose text-base">
+					{@html event.about}
 				</div>
 				<div class="card-actions -mx-6 mt-2 -mb-6 grid grid-cols-2 gap-0 text-base">
 					<div class="border-base-300 flex border-t border-r p-4">
@@ -37,12 +40,12 @@
 					</div>
 					<div class="border-base-300 flex border-t p-4">
 						<Icon icon="material-symbols:attach-money-rounded" class="size-6" />
-						<p class="ml-4">{event.details.cost}</p>
+						<p class="ml-4">{event.cost}</p>
 					</div>
-					{#if event.registrations}
+					{#if canShowDate(event) && event.register_link}
 						<a
 							class="border-base-300 bg-accent hover:bg-secondary text-accent-content hover:text-secondary-content col-span-2 flex border-t p-4 transition"
-							href={event.registrations || '#'}
+							href={event.register_link}
 							target="_blank"
 						>
 							<p class="font-semibold">Register Now</p>
@@ -56,17 +59,37 @@
 			<img src="/art/raccoon-hero.png" alt="" class="max-w-sm" />
 		</div>
 	</div>
-	<div class="my-10 text-center">
-		<h3 class="mx-auto max-w-prose text-center text-3xl font-bold text-balance">
+	<div class="my-10 text-center lg:my-20">
+		<h3 class="md: mx-auto max-w-prose px-20 text-center text-3xl font-bold text-balance">
 			Join us in {event.location} for a celebration of Terrible Ideas!
 		</h3>
-		{#if event.register || true}
-			<a href={event.register} class="btn btn-lg btn-primary mx-auto mt-4"> Register Now </a>
+		{#if canShowDate(event) && event.register_link}
+			<a href={event.register_link} class="btn btn-lg btn-primary mx-auto mt-4">
+				<Icon icon="material-symbols:location-on-outline-rounded" class="size-4" />
+				Register - {event.name}
+			</a>
 		{/if}
 	</div>
-	<div class="card bg-base-100 overflow-clip shadow-sm">
-		<div class="card-title">
-			<h2 class="text-3xl">Event Details</h2>
+	<div class="mx-4">
+		<div class="card bg-base-100 container mx-auto overflow-clip shadow-sm xl:max-w-3xl">
+			<div class="card-body">
+				<div class="card-title">Schedule</div>
+				<div class="prose mx-auto max-w-full text-base">
+					{@html event.schedule_prefix}
+					<div class="flex flex-col gap-4">
+						{#each event.schedule_accordion as day}
+							<div class="collapse-arrow bg-base-100 border-base-300 collapse border">
+								<input type="radio" name="schedule-accordion" />
+								<div class="collapse-title font-semibold">{day.header}</div>
+								<div class="collapse-content prose text-sm">
+									{@html day.body}
+								</div>
+							</div>
+						{/each}
+					</div>
+					{@html event.schedule_suffix}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

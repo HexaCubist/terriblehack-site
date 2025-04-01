@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { EventLocation } from '$lib/models';
+	import type { Schema } from '$lib/server/.directus/generated/client';
 	import { DateTime } from 'luxon';
 
-	let { event }: { event: EventLocation } = $props();
-	const start = DateTime.fromJSDate(event.start);
-	const end = DateTime.fromJSDate(event.end);
+	let { event }: { event: Schema['events'][0] } = $props();
+	const start = event.start && DateTime.fromJSDate(new Date(event.start));
+	const end = event.end && DateTime.fromJSDate(new Date(event.end));
 
 	// Function to add ordinal suffix to day number
 	// https://stackoverflow.com/a/76930885
@@ -15,11 +15,13 @@
 	}
 </script>
 
-{start.toFormat('LLLL')}
-{addOrdinal(start.day)} -
-{#if start.month === end.month}
-	{addOrdinal(end.day)}
-{:else}
-	{end.toFormat('LLLL')}
-	{addOrdinal(end.day)}
+{#if start && end}
+	{start.toFormat('LLLL')}
+	{addOrdinal(start.day)} -
+	{#if start.month === end.month}
+		{addOrdinal(end.day)}
+	{:else}
+		{end.toFormat('LLLL')}
+		{addOrdinal(end.day)}
+	{/if}
 {/if}

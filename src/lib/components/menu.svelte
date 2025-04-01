@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Logo from '$lib/assets/logo.svelte';
 	import Icon from '@iconify/svelte';
 
 	const { backdrop = false }: { backdrop?: boolean } = $props();
+
+	const { events } = page.data;
 </script>
 
 <div class="navbar-wrapper relative">
@@ -30,9 +33,9 @@
 					<details>
 						<summary>📍 Locations</summary>
 						<ul class="bg-base-100 text-base-content z-10 mt-0! rounded-t-none p-2">
-							<li><a href="/events/akl">Tāmaki Makaurau</a></li>
-							<li><a href="/events/syd">Sydney</a></li>
-							<li><a href="/events/lon">London</a></li>
+							{#each events as event}
+								<li><a href={`/events/${event.slug}`}>{event.name}</a></li>
+							{/each}
 						</ul>
 					</details>
 				</li>
