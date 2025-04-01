@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import EventDate from '$lib/components/eventDate.svelte';
 	import Menu from '$lib/components/menu.svelte';
 	import type { EventLocation } from '$lib/models';
 	import Icon from '@iconify/svelte';
@@ -8,14 +9,6 @@
 	const { event } = page.data;
 	const start = DateTime.fromJSDate(event.start);
 	const end = DateTime.fromJSDate(event.end);
-
-	// Function to add ordinal suffix to day number
-	// https://stackoverflow.com/a/76930885
-	function addOrdinal(number: number) {
-		const suffixes = ['th', 'st', 'nd', 'rd'];
-		const v = number % 100;
-		return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-	}
 </script>
 
 <img
@@ -31,14 +24,7 @@
 			<div class="card-body">
 				<h2 class="card-title my-0 text-5xl leading-none">{event.name}</h2>
 				<p class="text-2xl">
-					{start.toFormat('LLLL')}
-					{addOrdinal(start.day)} -
-					{#if start.month === end.month}
-						{addOrdinal(end.day)}
-					{:else}
-						{end.toFormat('LLLL')}
-						{addOrdinal(end.day)}
-					{/if}
+					<EventDate {event} />
 				</p>
 				<hr />
 				<div class="prose flex flex-col gap-2 text-base">

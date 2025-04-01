@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import Logo from '$lib/assets/logo.svelte';
+	import EventDate from '$lib/components/eventDate.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
 	import Cta from '../../lib/components/cta.svelte';
@@ -80,7 +81,7 @@
 				{/each}
 			</div>
 		</div>
-		{#if countdown}
+		{#if countdown && loc}
 			<div class="flex grow flex-col items-center justify-center lg:-mt-8">
 				<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
 					{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
@@ -107,7 +108,7 @@
 				</p>
 				<p class="text-xl tracking-wider">
 					{#if locStartDate && currentTime < locStartDate}
-						Till {loc?.location} Event Begins
+						{loc?.location} (<EventDate event={loc} />)
 					{:else if locEndDate && currentTime < locEndDate}
 						Till {loc?.location} Event Ends
 					{:else}
