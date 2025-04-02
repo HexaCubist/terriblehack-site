@@ -11,11 +11,9 @@ export enum imagePreset {
 }
 
 export const filetoURL = (file: string, transformation?: imagePreset) => {
-	const asset = readAssetRaw(file, {
-		key: transformation
-	});
 	const host = new URL(env.PUBLIC_HOST);
-	host.pathname = asset().path;
+	host.pathname = `/assets/${file}`;
+	host.searchParams.set('key', transformation);
 	return host.href;
 };
 
