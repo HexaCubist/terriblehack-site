@@ -11,7 +11,8 @@ import {
 	createTypedClient,
 	getGlobal,
 	readEventsItems,
-	readProjectsItems
+	readProjectsItems,
+	type Schema
 } from './.directus/generated/client';
 import { env } from '$env/dynamic/public';
 
@@ -23,7 +24,7 @@ export const getEvents = async () => {
 
 export const eventList = getEvents();
 
-export const getEvent = async (slug: string) => {
+export const getEvent = async (slug: string): Promise<Schema['events'][0]> => {
 	const events = await eventList;
 	const event = events.find((loc) => loc.slug === slug);
 	if (!event) {
@@ -38,15 +39,37 @@ export const getSiteData = async () => {
 
 getSiteData();
 
-export const getProjects = async (featured: boolean) => {
+// https://stackoverflow.com/a/2450976
+function shuffle(array: any[]) {
+	let currentIndex = array.length;
+
+	// While there remain elements to shuffle...
+	while (currentIndex != 0) {
+		// Pick a remaining element...
+		let randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+
+		// And swap it with the current element.
+		[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+	}
+}
+
+export const getProjects = async (featured: boolean, shuffled: boolean) => {
+	let res;
 	if (featured) {
-		return await client.request(
+		res = await client.request(
 			readProjectsItems({
 				filter: {
 					featured: true
 				}
 			})
 		);
+	} else {
+		res = await client.request(readProjectsItems());
 	}
-	return await client.request(readProjectsItems());
+	if (!res) {
+		throw new Error('Projects not found');
+	}
+	if (shuffled) shuffle(res);
+	return res;
 };

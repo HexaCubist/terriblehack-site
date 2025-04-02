@@ -4,6 +4,6 @@ import { getProjects } from '$lib/server/directus';
 
 export const load: PageServerLoad = async ({ params }) => {
 	return {
-		featured_projects: await getProjects(true)
+		featured_projects: await getProjects(true, true)
 	};
 };

@@ -6,6 +6,6 @@ import { getGlobal } from '$lib/server/.directus/generated/client';
 export const load: LayoutServerLoad = async ({ params }) => {
 	return {
 		events: await eventList,
-		globalData: getSiteData()
+		globalData: await getSiteData()
 	};
 };

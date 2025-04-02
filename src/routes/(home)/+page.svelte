@@ -10,8 +10,10 @@
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
+	import type { PageProps } from './$types';
+	let { data }: PageProps = $props();
 
-	const { events, featured_projects, globalData } = page.data;
+	const { events, featured_projects, globalData } = data;
 
 	const { extra_links } = globalData;
 
@@ -125,8 +127,11 @@
 						{/if}
 					</p>
 					{#if locStartDate && currentTime < locStartDate}
-						<p class="text-xl tracking-wider">
-							{loc?.location} (<EventDate event={loc} />)
+						<p class="text-center text-xl tracking-wider">
+							{loc?.location}
+						</p>
+						<p class="text-center text-xl font-black tracking-wider">
+							<EventDate event={loc} />
 						</p>
 					{:else if locEndDate && currentTime < locEndDate}
 						<p class="text-xl tracking-wider">
@@ -212,6 +217,7 @@
 				>
 					<h2 class="-mt-2 max-w-prose text-xl leading-none font-bold">{project.title}</h2>
 					<p class="mb-1 max-w-prose text-lg italic">{project.subtitle}</p>
+					<a href="/projects/{project.slug}" class="btn btn-accent self-end">Learn More</a>
 				</div>
 				<a href="/projects/{project.slug}" class="col-span-6 sm:col-span-2 md:col-span-2">
 					<img
