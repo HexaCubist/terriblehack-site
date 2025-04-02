@@ -42,7 +42,7 @@
 		class="bird-wrapper ease-bounce absolute left-20 z-20 size-0 -translate-y-1/2 drop-shadow-sm transition duration-300 hover:-rotate-12 hover:duration-500 md:size-40 lg:size-60"
 	>
 		<img
-			src="/art/{prop}.png"
+			src="/art/{prop}.webp"
 			alt=""
 			class="object-fit absolute top-0 right-0 h-full w-full object-right"
 		/>
