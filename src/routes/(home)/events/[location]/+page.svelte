@@ -7,7 +7,9 @@
 	import type { Schema } from '$lib/server/.directus/generated/client';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
-	const { event }: { event: Schema['events'][0] } = page.data as any;
+	import type { PageProps } from './$types';
+	let { data }: PageProps = $props();
+	let event = $derived(data.event);
 	const start = event.start && DateTime.fromJSDate(new Date(event.start));
 	const end = event.end && DateTime.fromJSDate(new Date(event.end));
 </script>
