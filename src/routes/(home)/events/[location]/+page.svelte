@@ -3,15 +3,12 @@
 	import EventDate from '$lib/components/eventDate.svelte';
 	import Menu from '$lib/components/menu.svelte';
 	import PageFooter from '$lib/components/pageFooter.svelte';
-	import { canShowDate } from '$lib/directusClient';
-	import type { Schema } from '$lib/server/.directus/generated/client';
+	import { canShowDate } from '$lib/clientUtils.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
 	let event = $derived(data.event);
-	const start = event.start && DateTime.fromJSDate(new Date(event.start));
-	const end = event.end && DateTime.fromJSDate(new Date(event.end));
 </script>
 
 <img
@@ -30,7 +27,11 @@
 			<div class="card-body">
 				<h2 class="card-title my-0 text-5xl leading-none">{event.name}</h2>
 				<p class="text-2xl">
-					<EventDate {event} />
+					{#if canShowDate(event)}
+						<EventDate {event} />
+					{:else}
+						Dates TBA
+					{/if}
 				</p>
 				<hr />
 				<div class="prose text-base">
