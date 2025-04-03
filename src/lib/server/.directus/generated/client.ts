@@ -245,6 +245,7 @@ export namespace Collections {
     slug: Types.String;
     color: Types.String;
     register_link: Types.Optional<Types.String>;
+    code_of_conduct_contact_details: Types.Optional<Types.String>;
   }
 
   /**
@@ -268,6 +269,34 @@ export namespace Collections {
   }
 
   /**
+   * The pages collection.
+   */
+  export interface Pages {
+    id: Types.PrimaryKey<Types.Integer>;
+    status: "archived" | "draft" | "published" | Types.String;
+    sort: Types.Optional<Types.Integer>;
+    user_updated: Types.Optional<Types.UUID | Collections.DirectusUser>;
+    date_updated: Types.Optional<Types.DateTime>;
+    parent_page: Types.Optional<Types.Integer | Collections.Pages>;
+    slug: Types.Optional<Types.String>;
+    permalink: Types.Optional<Types.String>;
+    title: Types.String;
+    seo_description: Types.String;
+    seo_image: Types.Optional<Types.UUID | Collections.DirectusFile>;
+    contents: Types.Optional<Types.String>;
+  }
+
+  /**
+   * The pages undefined collection.
+   */
+  export interface PagesUndefined {
+    id: Types.PrimaryKey<Types.Integer>;
+    pages_slug: Types.Optional<Types.String>;
+    item: Types.Optional<Types.String>;
+    collection: Types.Optional<Types.String>;
+  }
+
+  /**
    * The projects collection.
    */
   export interface Projects {
@@ -281,10 +310,11 @@ export namespace Collections {
     user_updated: Types.Optional<Types.UUID | Collections.DirectusUser>;
     date_updated: Types.Optional<Types.DateTime>;
     featured: Types.Optional<Types.Boolean>;
-    image: Types.Optional<Types.UUID | Collections.DirectusFile>;
     title: Types.Optional<Types.String>;
     slug: Types.Optional<Types.String>;
     subtitle: Types.Optional<Types.String>;
+    image: Types.Optional<Types.UUID | Collections.DirectusFile>;
+    links: Types.Optional<Types.JSON | Types.JSON>;
     description: Types.Optional<Types.String>;
     tags: Types.Optional<Types.JSON | Types.String[] | Types.JSON>;
     team_members: Types.Optional<Types.JSON | Types.JSON>;
@@ -463,6 +493,16 @@ export interface Schema extends System {
    * The global collection.
    */
   global: Collections.Global;
+
+  /**
+   * The pages collection.
+   */
+  pages: Collections.Pages[];
+
+  /**
+   * The pages undefined collection.
+   */
+  pages_undefined: Collections.PagesUndefined[];
 
   /**
    * The projects collection.
@@ -1135,6 +1175,539 @@ export function readGlobal<
 export const getGlobal = readGlobal;
 
 /**
+ * Create many pages items.
+ */
+export function createPagesItems<
+  const Query extends Directus.Query<Schema, Collections.Pages[]>,
+>(items: Partial<Collections.Pages>[], query?: Query) {
+  return DirectusSDK.createItems<Schema, "pages", Query>("pages", items, query);
+}
+
+/**
+ * Create a single pages item.
+ */
+export function createPagesItem<
+  const Query extends DirectusSDK.Query<Schema, Collections.Pages[]>, // Is this a mistake? Why []?
+>(item: Partial<Collections.Pages>, query?: Query) {
+  return DirectusSDK.createItem<Schema, "pages", Query>("pages", item, query);
+}
+
+/**
+ * Read many pages items.
+ */
+export function readPagesItems<
+  const Query extends Directus.Query<Schema, Collections.Pages>,
+>(query?: Query) {
+  return DirectusSDK.readItems<Schema, "pages", Query>("pages", query);
+}
+
+/**
+ * Read many pages items.
+ */
+export const listPages = readPagesItems;
+
+/**
+ * Gets a single known pages item by id.
+ */
+export function readPagesItem<
+  const Query extends Directus.Query<Schema, Collections.Pages>,
+>(key: string | number, query?: Query) {
+  return DirectusSDK.readItem<Schema, "pages", Query>("pages", key, query);
+}
+
+/**
+ * Gets a single known pages item by id.
+ */
+export const readPages = readPagesItem;
+
+/**
+ * Read many pages items.
+ */
+export function updatePagesItems<
+  const Query extends Directus.Query<Schema, Collections.Pages[]>,
+>(keys: string[] | number[], patch: Partial<Collections.Pages>, query?: Query) {
+  return DirectusSDK.updateItems<Schema, "pages", Query>(
+    "pages",
+    keys,
+    patch,
+    query,
+  );
+}
+
+/**
+ * Gets a single known pages item by id.
+ */
+export function updatePagesItem<
+  const Query extends Directus.Query<Schema, Collections.Pages[]>,
+>(key: string | number, patch: Partial<Collections.Pages>, query?: Query) {
+  return DirectusSDK.updateItem<Schema, "pages", Query>(
+    "pages",
+    key,
+    patch,
+    query,
+  );
+}
+
+/**
+ * Deletes many pages items.
+ */
+export function deletePagesItems<
+  const Query extends Directus.Query<Schema, Collections.Pages[]>,
+>(keys: string[] | number[]) {
+  return DirectusSDK.deleteItems<Schema, "pages", Query>("pages", keys);
+}
+
+/**
+ * Deletes a single known pages item by id.
+ */
+export function deletePagesItem(key: string | number) {
+  return DirectusSDK.deleteItem<Schema, "pages">("pages", key);
+}
+
+export class PagesItems
+  implements TypedCollectionItemsWrapper<Collections.Pages>
+{
+  /**
+   *
+   */
+  constructor(
+    private client: Directus.DirectusClient<Schema> &
+      Directus.RestClient<Schema>,
+  ) {}
+
+  /**
+   * Creates many items in the collection.
+   */
+  async create<
+    const Query extends DirectusSDK.Query<Schema, Collections.Pages>,
+  >(
+    items: Partial<Collections.Pages>[],
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>[]
+  > {
+    return (await this.client.request(
+      createPagesItems(items, query as any),
+    )) as any; // Seems like a bug in the SDK.
+  }
+
+  /**
+   * Read many items from the collection.
+   */
+  async query<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>[]
+  > {
+    return await this.client.request(readPagesItems(query));
+  }
+
+  /**
+   * Read the first item from the collection matching the query.
+   */
+  async find<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>
+    | undefined
+  > {
+    const items = await this.client.request(
+      readPagesItems({
+        ...query,
+        limit: 1,
+      }),
+    );
+    return items?.[0] as any; // TODO: fix
+  }
+
+  /**
+   * Update many items in the collection.
+   */
+  async update<const Query extends Directus.Query<Schema, Collections.Pages[]>>(
+    keys: string[] | number[],
+    patch: Partial<Collections.Pages>,
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>[]
+  > {
+    return await this.client.request(updatePagesItems(keys, patch, query));
+  }
+
+  /**
+   * Remove many items in the collection.
+   */
+  async remove<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    keys: string[] | number[],
+  ): Promise<void> {}
+}
+
+export class PagesItem
+  implements TypedCollectionItemWrapper<Collections.Pages>
+{
+  /**
+   *
+   */
+  constructor(
+    private client: Directus.DirectusClient<Schema> &
+      Directus.RestClient<Schema>,
+  ) {}
+
+  /**
+   * Create a single item in the collection.
+   */
+  async create<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    item: Partial<Collections.Pages>,
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>
+  > {
+    return (await this.client.request(
+      createPagesItem(item, query as any),
+    )) as any;
+  }
+
+  /**
+   * Read a single item from the collection.
+   */
+  async get<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    key: string | number,
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>
+    | undefined
+  > {
+    return await this.client.request(readPagesItem(key, query));
+  }
+
+  /**
+   * Update a single item from the collection.
+   */
+  async update<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    key: string | number,
+    patch: Partial<Collections.Pages>,
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<Schema, Collections.Pages, Query["fields"]>
+    | undefined
+  > {
+    return (await this.client.request(
+      updatePagesItem(key, patch, query as any),
+    )) as any;
+  }
+
+  /**
+   * Remove many items in the collection.
+   */
+  async remove<const Query extends Directus.Query<Schema, Collections.Pages>>(
+    key: string | number,
+  ): Promise<void> {
+    return await this.client.request(deletePagesItem(key));
+  }
+}
+
+/**
+ * Create many pages undefined items.
+ */
+export function createPagesUndefinedItems<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined[]>,
+>(items: Partial<Collections.PagesUndefined>[], query?: Query) {
+  return DirectusSDK.createItems<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    items,
+    query,
+  );
+}
+
+/**
+ * Create a single pages undefined item.
+ */
+export function createPagesUndefinedItem<
+  const Query extends DirectusSDK.Query<Schema, Collections.PagesUndefined[]>, // Is this a mistake? Why []?
+>(item: Partial<Collections.PagesUndefined>, query?: Query) {
+  return DirectusSDK.createItem<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    item,
+    query,
+  );
+}
+
+/**
+ * Read many pages undefined items.
+ */
+export function readPagesUndefinedItems<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+>(query?: Query) {
+  return DirectusSDK.readItems<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    query,
+  );
+}
+
+/**
+ * Read many pages undefined items.
+ */
+export const listPagesUndefined = readPagesUndefinedItems;
+
+/**
+ * Gets a single known pages undefined item by id.
+ */
+export function readPagesUndefinedItem<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+>(key: string | number, query?: Query) {
+  return DirectusSDK.readItem<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    key,
+    query,
+  );
+}
+
+/**
+ * Gets a single known pages undefined item by id.
+ */
+export const readPagesUndefined = readPagesUndefinedItem;
+
+/**
+ * Read many pages undefined items.
+ */
+export function updatePagesUndefinedItems<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined[]>,
+>(
+  keys: string[] | number[],
+  patch: Partial<Collections.PagesUndefined>,
+  query?: Query,
+) {
+  return DirectusSDK.updateItems<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    keys,
+    patch,
+    query,
+  );
+}
+
+/**
+ * Gets a single known pages undefined item by id.
+ */
+export function updatePagesUndefinedItem<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined[]>,
+>(
+  key: string | number,
+  patch: Partial<Collections.PagesUndefined>,
+  query?: Query,
+) {
+  return DirectusSDK.updateItem<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    key,
+    patch,
+    query,
+  );
+}
+
+/**
+ * Deletes many pages undefined items.
+ */
+export function deletePagesUndefinedItems<
+  const Query extends Directus.Query<Schema, Collections.PagesUndefined[]>,
+>(keys: string[] | number[]) {
+  return DirectusSDK.deleteItems<Schema, "pages_undefined", Query>(
+    "pages_undefined",
+    keys,
+  );
+}
+
+/**
+ * Deletes a single known pages undefined item by id.
+ */
+export function deletePagesUndefinedItem(key: string | number) {
+  return DirectusSDK.deleteItem<Schema, "pages_undefined">(
+    "pages_undefined",
+    key,
+  );
+}
+
+export class PagesUndefinedItems
+  implements TypedCollectionItemsWrapper<Collections.PagesUndefined>
+{
+  /**
+   *
+   */
+  constructor(
+    private client: Directus.DirectusClient<Schema> &
+      Directus.RestClient<Schema>,
+  ) {}
+
+  /**
+   * Creates many items in the collection.
+   */
+  async create<
+    const Query extends DirectusSDK.Query<Schema, Collections.PagesUndefined>,
+  >(
+    items: Partial<Collections.PagesUndefined>[],
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<
+      Schema,
+      Collections.PagesUndefined,
+      Query["fields"]
+    >[]
+  > {
+    return (await this.client.request(
+      createPagesUndefinedItems(items, query as any),
+    )) as any; // Seems like a bug in the SDK.
+  }
+
+  /**
+   * Read many items from the collection.
+   */
+  async query<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<
+      Schema,
+      Collections.PagesUndefined,
+      Query["fields"]
+    >[]
+  > {
+    return await this.client.request(readPagesUndefinedItems(query));
+  }
+
+  /**
+   * Read the first item from the collection matching the query.
+   */
+  async find<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<
+        Schema,
+        Collections.PagesUndefined,
+        Query["fields"]
+      >
+    | undefined
+  > {
+    const items = await this.client.request(
+      readPagesUndefinedItems({
+        ...query,
+        limit: 1,
+      }),
+    );
+    return items?.[0] as any; // TODO: fix
+  }
+
+  /**
+   * Update many items in the collection.
+   */
+  async update<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined[]>,
+  >(
+    keys: string[] | number[],
+    patch: Partial<Collections.PagesUndefined>,
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<
+      Schema,
+      Collections.PagesUndefined,
+      Query["fields"]
+    >[]
+  > {
+    return await this.client.request(
+      updatePagesUndefinedItems(keys, patch, query),
+    );
+  }
+
+  /**
+   * Remove many items in the collection.
+   */
+  async remove<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(keys: string[] | number[]): Promise<void> {}
+}
+
+export class PagesUndefinedItem
+  implements TypedCollectionItemWrapper<Collections.PagesUndefined>
+{
+  /**
+   *
+   */
+  constructor(
+    private client: Directus.DirectusClient<Schema> &
+      Directus.RestClient<Schema>,
+  ) {}
+
+  /**
+   * Create a single item in the collection.
+   */
+  async create<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(
+    item: Partial<Collections.PagesUndefined>,
+    query?: Query,
+  ): Promise<
+    DirectusSDK.ApplyQueryFields<
+      Schema,
+      Collections.PagesUndefined,
+      Query["fields"]
+    >
+  > {
+    return (await this.client.request(
+      createPagesUndefinedItem(item, query as any),
+    )) as any;
+  }
+
+  /**
+   * Read a single item from the collection.
+   */
+  async get<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(
+    key: string | number,
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<
+        Schema,
+        Collections.PagesUndefined,
+        Query["fields"]
+      >
+    | undefined
+  > {
+    return await this.client.request(readPagesUndefinedItem(key, query));
+  }
+
+  /**
+   * Update a single item from the collection.
+   */
+  async update<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(
+    key: string | number,
+    patch: Partial<Collections.PagesUndefined>,
+    query?: Query,
+  ): Promise<
+    | DirectusSDK.ApplyQueryFields<
+        Schema,
+        Collections.PagesUndefined,
+        Query["fields"]
+      >
+    | undefined
+  > {
+    return (await this.client.request(
+      updatePagesUndefinedItem(key, patch, query as any),
+    )) as any;
+  }
+
+  /**
+   * Remove many items in the collection.
+   */
+  async remove<
+    const Query extends Directus.Query<Schema, Collections.PagesUndefined>,
+  >(key: string | number): Promise<void> {
+    return await this.client.request(deletePagesUndefinedItem(key));
+  }
+}
+
+/**
  * Create many projects items.
  */
 export function createProjectsItems<
@@ -1756,6 +2329,26 @@ export type TypedClient = {
   >;
 
   /**
+   * Manages multiple items from the Pages collection.
+   */
+  pages: TypedCollectionItemsWrapper<Collections.Pages>;
+
+  /**
+   * Manages individual items from the Pages collection.
+   */
+  page: TypedCollectionItemWrapper<Collections.Pages>;
+
+  /**
+   * Manages multiple items from the PagesUndefined collection.
+   */
+  pages_undefineds: TypedCollectionItemsWrapper<Collections.PagesUndefined>;
+
+  /**
+   * Manages individual items from the PagesUndefined collection.
+   */
+  pages_undefined: TypedCollectionItemWrapper<Collections.PagesUndefined>;
+
+  /**
    * Manages multiple items from the Projects collection.
    */
   projects: TypedCollectionItemsWrapper<Collections.Projects>;
@@ -1933,6 +2526,12 @@ export const schema = () => {
           return client.request(readGlobal(query));
         },
       ],
+
+      ["pages", new PagesItems(client as any)],
+      ["page", new PagesItem(client as any)],
+
+      ["pages_undefineds", new PagesUndefinedItems(client as any)],
+      ["pages_undefined", new PagesUndefinedItem(client as any)],
 
       ["projects", new ProjectsItems(client as any)],
       ["project", new ProjectsItem(client as any)],

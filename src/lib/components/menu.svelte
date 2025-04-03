@@ -39,7 +39,7 @@
 						</ul>
 					</details>
 				</li>
-				<li><a href="/">❤️ Code of Conduct</a></li>
+				<li><a href="/code-of-conduct">❤️ Code of Conduct</a></li>
 				<li><a href="/">🤯 Projects</a></li>
 			</ul>
 		</div>

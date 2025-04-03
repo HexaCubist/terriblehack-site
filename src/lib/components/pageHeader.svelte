@@ -6,8 +6,15 @@
 		children,
 		prop = undefined,
 		animated = false,
-		rough = false
-	}: { children?: any; prop?: tokens; animated?: boolean; rough?: boolean } = $props();
+		rough = false,
+		minHeight = undefined
+	}: {
+		children?: any;
+		prop?: tokens;
+		animated?: boolean;
+		rough?: boolean;
+		minHeight: undefined | 'screen' | number;
+	} = $props();
 </script>
 
 <div
@@ -15,6 +22,8 @@
 	class:pb-15={prop}
 	class:mask-rough={rough}
 	class:mask-bottom={rough}
+	class:min-h-screen={minHeight === 'screen'}
+	style:min-height={typeof minHeight === 'number' ? `${minHeight}px` : undefined}
 >
 	<div class="header-bg">
 		<img
