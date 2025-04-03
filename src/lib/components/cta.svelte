@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { canShowDate } from '$lib/directusClient';
+	import { canShowDate } from '$lib/clientUtils.svelte';
 	import type { Schema } from '$lib/server/.directus/generated/client';
 
 	let {

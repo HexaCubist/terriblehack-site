@@ -12,19 +12,19 @@ import {
 	getGlobal,
 	readEventsItems,
 	readProjectsItems,
-	type Schema
+	type Collections
 } from './.directus/generated/client';
 import { env } from '$env/dynamic/public';
 
 const client = createTypedClient(env.PUBLIC_HOST).with(rest());
 
 export const getEvents = async () => {
-	return await client.request(readEventsItems());
+	return (await client.request(readEventsItems())) as Collections.Events[];
 };
 
 export const eventList = getEvents();
 
-export const getEvent = async (slug: string): Promise<Schema['events'][0]> => {
+export const getEvent = async (slug: string): Promise<Collections.Events> => {
 	const events = await eventList;
 	const event = events.find((loc) => loc.slug === slug);
 	if (!event) {

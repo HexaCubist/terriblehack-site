@@ -5,7 +5,7 @@
 	import EventDate from '$lib/components/eventDate.svelte';
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
-	import { canShowDate, filetoURL, imagePreset } from '$lib/directusClient';
+	import { canShowDate, filetoURL, getLocalEvent, imagePreset } from '$lib/clientUtils.svelte';
 	import Cta from '../../lib/components/cta.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
@@ -18,14 +18,7 @@
 	const { extra_links } = globalData;
 
 	const year = new Date().getFullYear();
-
-	let timezone: undefined | string = $state(undefined);
-	$effect(() => {
-		timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	});
-	let matched_location = $derived(
-		events.findIndex((loc) => timezone && timezone.includes(loc.timezone))
-	);
+	let matched_location = $derived(getLocalEvent(events));
 	let loc = $derived(matched_location === -1 ? undefined : events[matched_location]);
 	let locStartDate = $derived(loc?.start && DateTime.fromJSDate(new Date(loc.start)));
 	let locEndDate = $derived(loc?.end && DateTime.fromJSDate(new Date(loc.end)));
@@ -130,9 +123,11 @@
 						<p class="text-center text-xl tracking-wider">
 							{loc?.location}
 						</p>
-						<p class="text-center text-xl font-black tracking-wider">
-							<EventDate event={loc} />
-						</p>
+						{#if canShowDate(loc)}
+							<p class="text-center text-xl font-black tracking-wider">
+								<EventDate event={loc} />
+							</p>
+						{/if}
 					{:else if locEndDate && currentTime < locEndDate}
 						<p class="text-xl tracking-wider">
 							Left to submit in {loc?.location}!
