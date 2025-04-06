@@ -10,7 +10,7 @@
 	let { bg }: { bg?: boolean } = $props();
 </script>
 
-<div class="event-cards mask-rough relative w-full" class:has-bg={bg}>
+<div class="event-cards relative w-full" class:has-bg={bg} class:mask-rough={bg}>
 	{#if bg}
 		<div class="absolute inset-0 -z-10 bg-gray-950">
 			<video
@@ -32,8 +32,10 @@
 		{#each events as event, i}
 			{@const isMain = i === mainEvent}
 			<div
-				class:glow={isMain}
-				class="card event-card-ticket card-sm card-side bg-base-100 @container mx-auto w-full max-w-sm overflow-clip rounded-lg shadow-sm outline-2 outline-offset-0"
+				class="card event-card-ticket card-sm card-side bg-base-100 @container mx-auto w-full max-w-sm overflow-clip rounded-lg shadow-2xl outline-2 outline-offset-0"
+				style:--tw-shadow-color={event.color}
+				class:outline-4={isMain}
+				class:outline-offset-4={isMain}
 				style:outline-color={event.color}
 			>
 				<figure class="relative shrink-0">
@@ -132,9 +134,6 @@
 			transition:
 				transform 0.3s ease,
 				box-shadow 0.3s ease;
-			box-shadow:
-				10px 20px 20px 0 #00000099,
-				0 10px 20px 0px #00000059;
 			&:hover {
 				transform: rotateX(0deg);
 				transform-style: preserve-3d;

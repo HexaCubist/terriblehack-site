@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ShapeDivider from '$lib/assets/shape-divider.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
-	import EventCards from '$/lib/components/eventCards.svelte';
+	import EventCards from '$lib/components/eventCards.svelte';
 	import Icon from '@iconify/svelte';
 	import type { PageProps } from './$types';
 	import PageFooter from '$lib/components/pageFooter.svelte';
