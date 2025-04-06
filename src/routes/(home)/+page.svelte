@@ -7,6 +7,7 @@
 	import PageHeader from '$lib/components/pageHeader.svelte';
 	import { canShowDate, filetoURL, getLocalEvent, imagePreset } from '$lib/clientUtils.svelte';
 	import Cta from '../../lib/components/cta.svelte';
+	import EventCountdown from '$lib/components/eventCountdown.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
@@ -55,9 +56,15 @@
 			<div class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
 				{#if loc}
 					{#if canShowDate(loc)}
-						<a href={`/events/${loc.slug}`} class="btn btn-primary w-full sm:w-auto"
-							>{loc.name}: Register Now!
-						</a>
+						{#if locStartDate && currentTime < locStartDate}
+							<a href={`/events/${loc.slug}`} class="btn btn-primary w-full sm:w-auto"
+								>{loc.name}: Register Now!
+							</a>
+						{:else}
+							<a href={`/events/${loc.slug}`} class="btn btn-primary w-full sm:w-auto"
+								>{loc.name}: Submit Projects!
+							</a>
+						{/if}
 					{:else}
 						<a
 							href={`/events/${loc.slug}`}
@@ -96,51 +103,7 @@
 				{/if}
 			{:else}
 				<div class="flex grow flex-col items-center justify-center lg:-mt-8">
-					<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
-						{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
-							<Icon
-								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-								class="mb-[0.2em] inline size-[1em]"
-							></Icon>
-							{countdown.toFormat('M')} Month{countdown.months !== 1 ? 's' : ''}
-						{:else if countdown.days > 7}
-							<Icon
-								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-								class="mb-[0.2em] inline size-[1em]"
-							></Icon>
-							{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
-						{:else if countdown.days > 3}
-							<Icon
-								icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
-								class="mb-[0.2em] inline size-[1em]"
-							></Icon>
-							{countdown.toFormat('d')} Day{countdown.days !== 1 ? 's' : ''}
-						{:else}
-							{countdown.toFormat('hh:mm:ss')}
-						{/if}
-					</p>
-					{#if locStartDate && currentTime < locStartDate}
-						<p class="text-center text-xl tracking-wider">
-							{loc?.location}
-						</p>
-						{#if canShowDate(loc)}
-							<p class="text-center text-xl font-black tracking-wider">
-								<EventDate event={loc} />
-							</p>
-						{/if}
-					{:else if locEndDate && currentTime < locEndDate}
-						<p class="text-xl tracking-wider">
-							Left to submit in {loc?.location}!
-						</p>
-
-						<a href={env.PUBLIC_HOST} target="_blank" class="btn btn-lg btn-accent btn-sm mt-4"
-							>Submit Project</a
-						>
-					{:else}
-						<p class="text-xl tracking-wider">
-							Since: {loc?.location} Ended
-						</p>
-					{/if}
+					<EventCountdown actions={['schedule']} />
 				</div>
 			{/if}
 		{/if}

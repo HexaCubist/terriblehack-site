@@ -13,7 +13,7 @@
 		prop?: tokens;
 		animated?: boolean;
 		rough?: boolean;
-		minHeight: undefined | 'screen' | number;
+		minHeight?: 'screen' | number;
 	} = $props();
 </script>
 
