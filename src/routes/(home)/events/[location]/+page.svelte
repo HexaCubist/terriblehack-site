@@ -5,7 +5,7 @@
 	import EventDate from '$lib/components/eventDate.svelte';
 	import Menu from '$lib/components/menu.svelte';
 	import PageFooter from '$lib/components/pageFooter.svelte';
-	import { canShowDate } from '$lib/clientUtils.svelte';
+	import { canShowDate, filetoURL, imagePreset } from '$lib/clientUtils.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';
 	import type { PageProps } from './$types';
@@ -18,7 +18,7 @@
 </script>
 
 <img
-	src="/events/map-akl.webp"
+	src={filetoURL(event.Event_Background, imagePreset.large)}
 	alt=""
 	class="pointer-events-none absolute top-0 max-h-screen w-full object-cover object-top"
 	style:mask-image="linear-gradient(to bottom, #fff, #ffffffd4, #fff0)"
