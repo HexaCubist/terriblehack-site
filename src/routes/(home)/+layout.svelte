@@ -15,7 +15,7 @@
 
 <div class="drawer">
 	<input id="mobile-menu" type="checkbox" class="drawer-toggle" bind:checked={drawer_state} />
-	<div class="drawer-content flex flex-col">
+	<div class="drawer-content">
 		{@render children()}
 	</div>
 	<div class="drawer-side z-50">
