@@ -109,15 +109,15 @@
 					>
 						<div class="card-body lg:mx-10">
 							<div class="bg-base-100 top-0 z-10 max-w-full">
-								<div class="mt-4 mb-8 flex items-center justify-center gap-4">
-									<div class="border-base-300 grow border-b-2 border-dotted"></div>
-									<h2 class="text-center text-5xl">{season} Projects</h2>
-									<div class="border-base-300 grow border-b-2 border-dotted"></div>
+								<div class="mt-4 mb-4 flex items-center justify-center gap-4">
+									<div class="border-base-300 hidden grow border-b-2 border-dotted sm:block"></div>
+									<h2 class="text-5xl font-bold sm:text-center">{season} Projects</h2>
+									<div class="border-base-300 hidden grow border-b-2 border-dotted sm:block"></div>
 								</div>
 							</div>
 							{#each sortedEvents.filter( (e) => seasonProjects.some((p) => p.event === e.id) ) as event}
 								{@const eventProjects = seasonProjects.filter((p) => p.event === event.id)}
-								<h3 class="text-3xl font-bold" id="{season}-{event.slug}">
+								<h3 class="mt-4 text-3xl font-bold" id="{season}-{event.slug}">
 									{season} - {event.name}
 								</h3>
 								<div
@@ -139,7 +139,7 @@
 													{project.title}
 												</h2>
 												<div class="relative w-full">
-													<div class="flex gap-2 overflow-y-auto pr-2">
+													<div class="gap-2 pr-2 md:flex md:overflow-y-auto">
 														{#each project.tags as tag}
 															<span class="badge badge-sm shrink-0">
 																{tag}
@@ -148,7 +148,7 @@
 													</div>
 													{#if project.tags.length > 1}
 														<div
-															class="absolute top-0 right-0 z-10 h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5"
+															class=" absolute top-0 right-0 z-10 hidden h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5 md:block"
 														></div>
 													{/if}
 												</div>

@@ -98,7 +98,7 @@
 					</div>
 				{/if}
 			</div>
-			<div class="min-w-sm grow basis-sm">
+			<div class="w-full grow basis-sm">
 				<div class="gallery">
 					{#if imageRichData}
 						<a
