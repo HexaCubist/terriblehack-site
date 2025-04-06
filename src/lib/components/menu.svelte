@@ -40,7 +40,7 @@
 					</details>
 				</li>
 				<li><a href="/code-of-conduct">❤️ Code of Conduct</a></li>
-				<li><a href="/">🤯 Projects</a></li>
+				<li><a href="/projects">🤯 Projects</a></li>
 			</ul>
 		</div>
 		<div class="navbar-end inline-flex sm:hidden">

@@ -12,6 +12,7 @@
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
+	import ProjectCarousel from '$lib/components/projectCarousel.svelte';
 	let { data }: PageProps = $props();
 
 	const { events, featured_projects, globalData } = data;
@@ -88,7 +89,7 @@
 		</div>
 		{#if countdown && loc}
 			{#if locEndDate && locEndDate < currentTime}
-				{#if locEndDate.diff(currentTime, 'days').days > -50}
+				{#if locEndDate.diff(currentTime, 'days').days > -14}
 					<div
 						class=" hidden grow flex-col items-center justify-center text-center drop-shadow lg:-mt-8 lg:flex"
 					>
@@ -100,10 +101,25 @@
 							>Submit Project</a
 						>
 					</div>
+				{:else if locEndDate.diff(currentTime, 'days').days > -50}
+					<div class="flex flex-col gap-2">
+						<div class="mx-auto">
+							<ProjectCarousel projects={featured_projects} dots={false} />
+						</div>
+						<div
+							class=" hidden grow flex-col items-center justify-center text-center drop-shadow lg:flex"
+						>
+							<p class="">Thanks for joining! See you next time 💖</p>
+						</div>
+					</div>
 				{/if}
 			{:else}
 				<div class="flex grow flex-col items-center justify-center lg:-mt-8">
-					<EventCountdown actions={['schedule']} />
+					<EventCountdown actions={['schedule']}>
+						<div class="lg:mt-8">
+							<ProjectCarousel projects={featured_projects} />
+						</div>
+					</EventCountdown>
 				</div>
 			{/if}
 		{/if}

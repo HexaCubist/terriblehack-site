@@ -54,8 +54,11 @@ function shuffle(array: any[]) {
 	}
 }
 
-export const getProjects = async (featured: boolean, shuffled: boolean) => {
-	let res;
+export const getProjects = async (
+	featured: boolean,
+	shuffled: boolean
+): Promise<Collections.Projects[]> => {
+	let res: Collections.Projects[];
 	if (featured) {
 		res = await client.request(
 			readProjectsItems({
@@ -65,7 +68,7 @@ export const getProjects = async (featured: boolean, shuffled: boolean) => {
 			})
 		);
 	} else {
-		res = await client.request(readProjectsItems());
+		res = (await client.request(readProjectsItems())) as any;
 	}
 	if (!res) {
 		throw new Error('Projects not found');
