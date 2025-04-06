@@ -7,7 +7,15 @@
 	import ProjectCard from './projectCard.svelte';
 	import Icon from '@iconify/svelte';
 
-	let { projects, dots = true }: { projects: Collections.Projects[]; dots?: boolean } = $props();
+	let {
+		projects,
+		dots = true,
+		multiple = 'mobileOnly'
+	}: {
+		projects: Collections.Projects[];
+		dots?: boolean;
+		multiple?: 'mobileOnly' | boolean;
+	} = $props();
 
 	let index = $state(0);
 
@@ -37,7 +45,11 @@
 
 <div class="flex flex-col gap-2">
 	<div
-		class="embla lg:rounded-box w-full lg:aspect-square lg:max-w-xs lg:overflow-hidden lg:shadow-lg"
+		class="embla w-full {multiple === 'mobileOnly'
+			? 'lg:rounded-box lg:aspect-square lg:max-w-xs lg:overflow-hidden lg:shadow-lg'
+			: multiple
+				? ''
+				: 'rounded-box aspect-square max-w-xs overflow-hidden shadow-lg'}"
 		use:emblaCarouselSvelte={config}
 		onemblaInit={onInit}
 	>
@@ -45,7 +57,11 @@
 			{#each projects as project}
 				{#if project.image}
 					<div
-						class="embla__slide mr-4 aspect-square max-w-40 flex-shrink-0 lg:max-w-xs"
+						class="embla__slide mr-4 aspect-square flex-shrink-0 {multiple === 'mobileOnly'
+							? 'max-w-40 lg:max-w-xs'
+							: multiple
+								? 'max-w-40 lg:max-w-60'
+								: 'max-w-xs'}"
 						style="flex: 0 0 100%"
 						onpointerenter={() => autoplay.stop()}
 					>

@@ -214,36 +214,7 @@
 		style:background-image="url('/art/dark-footer-v3.webp')"
 	></div>
 	<!-- Extra project gallery -->
-	<div class="relative mx-auto hidden w-full max-w-6xl text-center sm:block md:px-4">
-		<div class="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:gap-8">
-			{#each featured_projects.slice(3, 3 + 4) as project, i}
-				<a
-					class="project group relative aspect-square w-full overflow-clip rounded-xl text-white shadow"
-					href="/projects/{project.slug}"
-				>
-					<img
-						src={filetoURL(project.image, imagePreset.small)}
-						alt=""
-						class="absolute inset-0 block size-full object-cover"
-					/>
-					<div
-						class="absolute inset-0 h-[200%] bg-gradient-to-t from-black/80 from-50% to-black/0 transition duration-300 group-hover:-translate-y-20"
-					></div>
-					<div class="absolute bottom-0 left-0 flex w-full items-center justify-between px-4 py-3">
-						<h3 class="text-sm font-semibold transition-transform group-hover:underline lg:text-xl">
-							{project.title}
-						</h3>
-						<span
-							><Icon
-								icon="material-symbols:chevron-right-rounded"
-								class="inline h-6 w-6 opacity-0 transition duration-300 group-hover:opacity-100"
-							/></span
-						>
-					</div>
-				</a>
-			{/each}
-		</div>
-	</div>
+	<ProjectCarousel projects={featured_projects} dots={false} multiple />
 	<div class="relative mt-8 flex flex-wrap items-center justify-center gap-4">
 		<a href="/projects" class="btn btn-lg btn-accent btn-outline relative"> More Projects</a>
 		<Cta {loc} color="primary" />

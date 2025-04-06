@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { filetoURL, imagePreset } from '$lib/clientUtils.svelte';
 	import type { Collections } from '$lib/server/.directus/generated/client';
+	import truncate from 'truncate';
 
 	let { project, card = true }: { project: Collections.Projects; card?: boolean } = $props();
 </script>
@@ -25,9 +26,9 @@
 			class="relative z-10 flex h-full w-full flex-col justify-end gap-4 p-8 opacity-0 transition duration-700 group-hover:opacity-100 lg:opacity-100"
 		>
 			<div
-				class="hidden shrink overflow-hidden opacity-0 transition duration-700 group-hover:opacity-100 lg:block"
+				class="hidden shrink overflow-hidden text-ellipsis opacity-0 transition duration-700 group-hover:opacity-100 lg:block"
 			>
-				<p>{project.subtitle}</p>
+				{truncate(project.subtitle || '', 80)}
 			</div>
 			<div class="caption shrink-0">
 				<p class="overflow-x-hidden font-bold break-words hyphens-auto sm:text-sm lg:text-xl">
