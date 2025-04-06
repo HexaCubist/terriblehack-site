@@ -14,14 +14,12 @@
 	let project = $derived(data.project);
 
 	onMount(() => {
-		document.querySelectorAll<HTMLDivElement>('div.gallery').forEach((g) => {
-			const lightbox = new PhotoSwipeLightbox({
-				gallery: g,
-				children: 'a',
-				pswpModule: PhotoSwipe
-			});
-			lightbox.init();
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '.gallery',
+			children: 'a',
+			pswpModule: PhotoSwipe
 		});
+		lightbox.init();
 	});
 
 	const calculateImagesize = (width?: number, height?: number) => {
@@ -98,25 +96,23 @@
 					</div>
 				{/if}
 			</div>
-			<div class="w-full grow basis-sm">
-				<div class="gallery">
-					{#if imageRichData}
-						<a
-							href={filetoURL(imageRichData.id, imagePreset.large)}
-							data-pswp-width={calculateImagesize(imageRichData.width, imageRichData.height)[0]}
-							data-pswp-height={calculateImagesize(imageRichData.width, imageRichData.height)[1]}
-							data-cropped="true"
-							class="mb-4 block aspect-video overflow-clip rounded-lg shadow-lg"
-						>
-							<img
-								class="size-full object-cover"
-								src={filetoURL(imageRichData.id, imagePreset.small)}
-								alt={project.title}
-							/>
-						</a>
-					{/if}
-				</div>
-				<div class="gallery grid auto-rows-min grid-cols-2 gap-4 sm:grid-cols-3">
+			<div class="gallery w-full grow basis-sm">
+				{#if imageRichData}
+					<a
+						href={filetoURL(imageRichData.id, imagePreset.large)}
+						data-pswp-width={calculateImagesize(imageRichData.width, imageRichData.height)[0]}
+						data-pswp-height={calculateImagesize(imageRichData.width, imageRichData.height)[1]}
+						data-cropped="true"
+						class="mb-4 block aspect-video overflow-clip rounded-lg shadow-lg"
+					>
+						<img
+							class="size-full object-cover"
+							src={filetoURL(imageRichData.id, imagePreset.small)}
+							alt={project.title}
+						/>
+					</a>
+				{/if}
+				<div class="grid auto-rows-min grid-cols-2 gap-4 sm:grid-cols-3">
 					{#each project.gallery as image}
 						{@const richData =
 							typeof image.directus_files_id === 'string' ? undefined : image.directus_files_id}
