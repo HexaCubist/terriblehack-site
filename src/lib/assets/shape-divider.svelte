@@ -9,20 +9,24 @@
 		color?: string;
 		height?: number;
 		width?: number;
-		inverted: boolean;
-		rotate: boolean;
+		inverted?: boolean;
+		rotate?: boolean;
 	} = $props();
 </script>
 
 {#if inverted}
-	<div
-		style:--width={width}
-		style:--height={height}
-		class="shape-divider"
-		class:rotate-180={rotate}
-	>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-			<path d="M 1200 0 L 0 0 L 0 114.72 L 600 1 L 1200 114.72 z" style:fill={color}></path>
+	<div style:--width={width} style:--height={height} class="shape-divider">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 1200 120"
+			preserveAspectRatio="none"
+			class:rotate-180={rotate}
+		>
+			<!-- <path d="M 1200 0 L 0 0 L 0 114.72 L 600 1 L 1200 114.72 z" style:fill={color}></path> -->
+			<path
+				d="M 1200 0 L 0 0 L 0 114.72 L 246 2 C 246 2 900 114.72 1200 114.72 z"
+				style:fill={color}
+			></path>
 		</svg>
 	</div>
 {:else}
@@ -48,7 +52,7 @@
 	svg {
 		position: relative;
 		display: block;
-		width: calc(var(--width) * 1.3%);
-		height: calc(var(--height) * 1px);
+		width: calc(var(--width) * 1%);
+		height: calc(var(--height) * 1vw);
 	}
 </style>

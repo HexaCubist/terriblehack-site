@@ -88,7 +88,7 @@
 
 			<div class="mt-4 hidden flex-wrap gap-4 sm:flex">
 				<a
-					href={env.PUBLIC_HOST}
+					href={env.PUBLIC_HOST + 'admin/content/projects'}
 					target="_blank"
 					class="btn btn-block btn-sm lg:btn-md xl:btn-lg btn-primary lg:w-auto"
 					class:hidden={!actions.includes('submit')}

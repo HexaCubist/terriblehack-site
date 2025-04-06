@@ -72,7 +72,7 @@
 							</button>
 							<a
 								class="border-base-300 bg-accent md:bg-primary hover:bg-secondary text-primary-content hover:text-secondary-content flex border-t p-4 transition sm:border-r md:col-span-2"
-								href={env.PUBLIC_HOST}
+								href={env.PUBLIC_HOST + 'admin/content/projects'}
 								target="_blank"
 							>
 								<Icon icon="material-symbols:how-to-vote-rounded" class="mr-4 size-6" />

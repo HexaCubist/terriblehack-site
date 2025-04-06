@@ -22,7 +22,7 @@
 		<!-- Policy menu -->
 		<ul class="menu menu-horizontal">
 			<li><a href="/fine-print">Event T&amp;Cs</a></li>
-			<li><a href="/privacy">Privacy Policy</a></li>
+			<li><a href="/privacy-policy">Privacy Policy</a></li>
 		</ul>
 	</div>
 </footer>
