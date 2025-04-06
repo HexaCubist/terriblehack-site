@@ -6,7 +6,7 @@
 	import FeatureList from '$lib/components/featureList.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
 	import { canShowDate, filetoURL, getLocalEvent, imagePreset } from '$lib/clientUtils.svelte';
-	import Cta from '../../lib/components/cta.svelte';
+	import Cta from '$lib/components/cta.svelte';
 	import EventCountdown from '$lib/components/eventCountdown.svelte';
 	import Icon from '@iconify/svelte';
 	import { DateTime } from 'luxon';

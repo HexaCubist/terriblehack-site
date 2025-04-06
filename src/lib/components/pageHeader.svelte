@@ -7,18 +7,20 @@
 		prop = undefined,
 		animated = false,
 		rough = false,
-		minHeight = undefined
+		minHeight = undefined,
+		bg = 'hero'
 	}: {
 		children?: any;
 		prop?: tokens;
 		animated?: boolean;
 		rough?: boolean;
 		minHeight?: 'screen' | number;
+		bg?: 'hero' | 'aurora' | 'hero-no-overlay';
 	} = $props();
 </script>
 
 <div
-	class="header-wrapper relative overflow-clip"
+	class="header-wrapper relative flex flex-col overflow-clip"
 	class:pb-15={prop}
 	class:mask-rough={rough}
 	class:mask-bottom={rough}
@@ -26,22 +28,42 @@
 	style:min-height={typeof minHeight === 'number' ? `${minHeight}px` : undefined}
 >
 	<div class="header-bg">
-		<img
-			src="/art/hero-banner-alt.webp"
-			alt=""
-			class:ken-burns={animated}
-			class="absolute top-0 left-0 h-full w-full object-cover object-bottom"
-		/>
-		<div
-			class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black to-transparent"
-		></div>
-		<div
-			class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-b from-black/40 from-0% to-transparent to-[8rem]"
-		></div>
+		{#if bg.includes('hero')}
+			<img
+				src="/art/hero-banner-alt.webp"
+				alt=""
+				class:ken-burns={animated}
+				class="absolute top-0 left-0 h-full w-full object-cover object-bottom"
+			/>
+			<div
+				class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-b from-black/40 from-0% to-transparent to-[8rem]"
+			></div>
+			{#if !bg.includes('no-overlay')}
+				<div
+					class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black to-transparent"
+				></div>
+			{/if}
+		{:else if bg === 'aurora'}
+			<video
+				autoplay
+				loop
+				muted
+				preload="auto"
+				src="/art/aurora.webm"
+				class="absolute inset-0 h-full w-full object-cover"
+			></video>
+			<div
+				class="absolute inset-0 bg-repeat"
+				style:background-image="url(/art/grid-overlay.svg)"
+			></div>
+			<div
+				class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black/40 to-transparent/30"
+			></div>
+		{/if}
 	</div>
-	<div class="header-contents relative z-10">
+	<div class="header-contents relative z-10 flex h-full grow flex-col">
 		<Menu backdrop />
-		<div class="container mx-auto px-6 text-white">
+		<div class="container mx-auto flex h-full grow flex-col px-6 text-white">
 			{@render children?.()}
 		</div>
 	</div>

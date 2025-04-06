@@ -1,9 +1,12 @@
 <script lang="ts">
 	import ShapeDivider from '$lib/assets/shape-divider.svelte';
 	import PageHeader from '$lib/components/pageHeader.svelte';
+	import EventCards from '$/lib/components/eventCards.svelte';
 	import Icon from '@iconify/svelte';
 	import type { PageProps } from './$types';
 	import PageFooter from '$lib/components/pageFooter.svelte';
+	import { filetoURL, imagePreset } from '$lib/clientUtils.svelte';
+	import EventDate from '$lib/components/eventDate.svelte';
 
 	let { data }: PageProps = $props();
 	let { events } = data;
@@ -20,15 +23,14 @@
 			</p>
 			<div class="flex gap-4">
 				<a href="#overview" class="btn btn-secondary btn-outline mt-8">Overview</a>
-				<a href="#schedule" class="btn btn-secondary btn-outline mt-8">Frequently Asked Questions</a
-				>
+				<a href="#faq" class="btn btn-secondary btn-outline mt-8">Frequently Asked Questions</a>
 				<a href="#how-it-started" class="btn btn-secondary btn-outline mt-8">How it started</a>
 				<a href="#local-details" class="btn btn-secondary btn-outline mt-8">Local details</a>
 			</div>
 		</div>
 	</div>
 </PageHeader>
-<div class="p-4 md:my-16 lg:my-24 xl:my-20">
+<div class="p-4 md:my-16 lg:my-24 xl:my-20" id="overview">
 	<div class="container mx-auto max-w-3xl gap-8 md:columns-2">
 		<div class="prose break-inside-avoid-column">
 			<h2>What is a hackathon?</h2>
@@ -58,7 +60,7 @@
 			</p>
 		</div>
 		<div class="flex h-[10em] w-full grow items-center justify-center p-4">
-			<a class="btn btn-primary w-full sm:w-auto" href="/events">
+			<a class="btn btn-primary w-full sm:w-auto" href="#local-details">
 				<p class="font-semibold">Local Details</p>
 				<Icon icon="material-symbols:arrow-right-alt-rounded" class="size-6" />
 			</a>
@@ -67,7 +69,7 @@
 </div>
 
 <ShapeDivider width={100} height={3} rotate inverted flip color="#033620" />
-<div class="bg-forest text-forest-content relative -mt-px p-4 pb-8">
+<div class="bg-forest text-forest-content relative -mt-px p-4 pb-8" id="faq">
 	<div class="container mx-auto mt-10">
 		<div class="w-full text-center">
 			<img
@@ -175,7 +177,7 @@
 		>
 	</figcaption>
 </figure>
-<div class="container mx-auto mb-20">
+<div class="container mx-auto mb-20" id="how-it-started">
 	<div class="mx-4">
 		<h2 class="text-4xl font-bold">How it all started</h2>
 		<p class="prose max-w-full">
@@ -219,6 +221,13 @@
 			weekend to more folk.
 		</p>
 	</div>
+</div>
+
+<div class="mx-auto mb-16" id="local-details">
+	<div class="mx-4 mb-4">
+		<h2 class="text-center text-4xl font-bold">Ready to register?</h2>
+	</div>
+	<EventCards bg />
 </div>
 
 <PageFooter />

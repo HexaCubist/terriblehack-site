@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/public';
 import { readAssetRaw } from '@directus/sdk';
-import type { Collections, Schema } from './server/.directus/generated/client';
+import type { Collections, Schema, Types } from './server/.directus/generated/client';
 import { DateTime } from 'luxon';
 import { onMount } from 'svelte';
 import { browser } from '$app/environment';
@@ -13,10 +13,13 @@ export enum imagePreset {
 	large = 'large'
 }
 
-export const filetoURL = (file: string, transformation?: imagePreset) => {
+export const filetoURL = (
+	file: Types.UUID | Collections.DirectusFile,
+	transformation?: imagePreset
+) => {
 	const host = new URL(env.PUBLIC_HOST);
-	host.pathname = `/assets/${file}`;
-	host.searchParams.set('key', transformation);
+	host.pathname = `/assets/${typeof file === 'string' ? file : file.id}`;
+	host.searchParams.set('key', transformation || imagePreset.medium);
 	return host.href;
 };
 

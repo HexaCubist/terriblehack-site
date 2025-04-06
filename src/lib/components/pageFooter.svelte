@@ -1,3 +1,7 @@
+<script lang="ts">
+	let { inverted = false }: { inverted?: boolean } = $props();
+</script>
+
 <footer class="mt-10 grid grid-cols-12 p-8 text-xs">
 	<div
 		class="order-1 col-span-12 flex flex-col items-center justify-center gap-4 sm:col-span-6 sm:items-start md:order-none md:col-span-3"
@@ -13,6 +17,7 @@
 		<img
 			src="/art/love-note.png"
 			class="mt-6 h-6 opacity-80"
+			class:invert={inverted}
 			alt="Be awesome (a cute love heart is illustrated)"
 		/>
 	</div>
