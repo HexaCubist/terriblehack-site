@@ -76,3 +76,22 @@ export const getProjects = async (
 	if (shuffled) shuffle(res);
 	return res;
 };
+
+export const getProject = async (slug: string): Promise<Collections.Projects> => {
+	const res = await client.request(
+		readProjectsItems({
+			filter: {
+				slug: { _eq: slug }
+			},
+			limit: 1,
+			fields: ['*', 'gallery.directus_files_id.*', 'image.*']
+		})
+	);
+	if (!res) {
+		throw new Error('Project not found');
+	}
+	if (res.length === 0) {
+		throw new Error('Project not found');
+	}
+	return res[0];
+};

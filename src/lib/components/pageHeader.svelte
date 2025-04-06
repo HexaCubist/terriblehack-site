@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Menu from './menu.svelte';
 	type tokens = 'kea' | 'raccoon';
+	type backgroundPresets = 'hero' | 'aurora' | 'hero-no-overlay';
 
 	const {
 		children,
@@ -15,7 +16,7 @@
 		animated?: boolean;
 		rough?: boolean;
 		minHeight?: 'screen' | number;
-		bg?: 'hero' | 'aurora' | 'hero-no-overlay';
+		bg?: backgroundPresets | string;
 	} = $props();
 </script>
 
@@ -58,6 +59,19 @@
 			></div>
 			<div
 				class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black/40 to-transparent/30"
+			></div>
+		{:else}
+			<img
+				src={bg}
+				alt=""
+				class:ken-burns={animated}
+				class="absolute top-0 left-0 h-full w-full object-cover object-center"
+			/>
+			<div
+				class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-b from-black/40 from-0% to-transparent to-[8rem]"
+			></div>
+			<div
+				class="overlay-1 absolute top-0 left-0 h-full w-full bg-gradient-to-tr from-black to-transparent"
 			></div>
 		{/if}
 	</div>
