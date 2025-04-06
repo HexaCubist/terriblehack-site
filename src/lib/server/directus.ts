@@ -68,7 +68,7 @@ export const getProjects = async (
 			})
 		);
 	} else {
-		res = (await client.request(readProjectsItems())) as any;
+		res = await client.request(readProjectsItems());
 	}
 	if (!res) {
 		throw new Error('Projects not found');
