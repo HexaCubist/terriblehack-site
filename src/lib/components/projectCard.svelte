@@ -6,7 +6,7 @@
 	let { project, card = true }: { project: Collections.Projects; card?: boolean } = $props();
 </script>
 
-<a href="/projects/{project.slug}" target="_blank" class="contents">
+<a href="/projects/{project.slug}" class="contents">
 	<article
 		class="group relative w-full text-white {card
 			? 'rounded-box aspect-square max-w-xs overflow-hidden shadow-lg'
