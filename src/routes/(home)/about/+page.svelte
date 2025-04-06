@@ -21,11 +21,11 @@
 				made a weekend just for it. Experience: <strong>mess</strong>, <strong>disaster</strong>,
 				<strong>joy</strong>, and <strong>community</strong>.
 			</p>
-			<div class="flex gap-4">
-				<a href="#overview" class="btn btn-secondary btn-outline mt-8">Overview</a>
-				<a href="#faq" class="btn btn-secondary btn-outline mt-8">Frequently Asked Questions</a>
-				<a href="#how-it-started" class="btn btn-secondary btn-outline mt-8">How it started</a>
-				<a href="#local-details" class="btn btn-secondary btn-outline mt-8">Local details</a>
+			<div class="mt-8 flex flex-wrap gap-4">
+				<a href="#overview" class="btn btn-secondary btn-outline">Overview</a>
+				<a href="#faq" class="btn btn-secondary btn-outline">Frequently Asked Questions</a>
+				<a href="#how-it-started" class="btn btn-secondary btn-outline">How it started</a>
+				<a href="#local-details" class="btn btn-secondary btn-outline">Local details</a>
 			</div>
 		</div>
 	</div>

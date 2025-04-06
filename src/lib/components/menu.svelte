@@ -44,9 +44,9 @@
 			</ul>
 		</div>
 		<div class="navbar-end inline-flex sm:hidden">
-			<button class="btn btn-square btn-ghost hover:bg-base-100">
+			<label class="btn btn-square btn-ghost hover:bg-base-100" for="mobile-menu">
 				<Icon icon="material-symbols:menu-rounded" class="h-6 w-6" />
-			</button>
+			</label>
 		</div>
 	</div>
 </div>
