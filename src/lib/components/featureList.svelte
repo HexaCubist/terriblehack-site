@@ -14,7 +14,7 @@
 		class="relative mx-auto my-4 flex w-auto flex-row justify-center gap-4 sm:my-8 sm:items-center sm:gap-8"
 	>
 		<div
-			class="bg-base-content text-base-100 absolute left-0 flex h-full items-start justify-center rounded-xl p-2 sm:relative sm:size-16 sm:items-center sm:rounded-full"
+			class="sm:bg-base-content sm:text-base-100 absolute left-0 flex h-full items-start justify-center rounded-xl p-2 sm:relative sm:size-16 sm:items-center sm:rounded-full"
 		>
 			<Icon icon={item.icon} class="size-4 sm:size-8" />
 		</div>
