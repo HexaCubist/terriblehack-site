@@ -50,7 +50,7 @@
 		<p class="prose pb-4 text-white">
 			{project.subtitle}
 		</p>
-		<div class="flex gap-4">
+		<div class="flex flex-wrap gap-4">
 			{#each project.tags as tag}
 				<div class="badge badge-outline badge-lg badge-accent">{tag}</div>
 			{/each}
@@ -63,7 +63,7 @@
 		<div class="flex flex-wrap gap-4">
 			<div class="grow">
 				<div class="prose">
-					<h2>{project.title}</h2>
+					<h2 class="hidden lg:block">{project.title}</h2>
 					{@html project.description}
 				</div>
 				{#if project.links?.length > 0}
