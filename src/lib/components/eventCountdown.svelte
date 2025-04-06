@@ -115,7 +115,7 @@
 			</div>
 		{:else}
 			<p class="text-xl tracking-wider">
-				Since: {loc?.name} Ended
+				Since: {loc?.name} Event Ended
 			</p>
 		{/if}
 	</div>
