@@ -123,7 +123,7 @@
 								<div
 									class="grid content-center justify-items-center gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 								>
-									{#each eventProjects as project}
+									{#each eventProjects as project (project.id)}
 										<div class="card bg-base-100 w-full max-w-96 overflow-clip shadow-sm">
 											<a href="/projects/{project.slug}">
 												<figure>
@@ -146,7 +146,7 @@
 															</span>
 														{/each}
 													</div>
-													{#if project.tags.length > 1}
+													{#if project.tags?.length > 1}
 														<div
 															class=" absolute top-0 right-0 z-10 hidden h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5 md:block"
 														></div>
