@@ -31,3 +31,6 @@ let timezone: undefined | string = $state(undefined);
 if (browser) timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 export const getLocalEvent = (events: Collections.Events[]) =>
 	events.findIndex((loc) => timezone && timezone.includes(loc.timezone));
+
+export const getLocalEventFromTimezone = (events: Collections.Events[], tz: string) =>
+	events.findIndex((loc) => tz && tz.includes(loc.timezone));

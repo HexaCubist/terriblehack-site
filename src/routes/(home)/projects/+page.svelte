@@ -8,7 +8,12 @@
 	import Icon from '@iconify/svelte';
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
-	import { filetoURL, getLocalEvent, imagePreset } from '$lib/clientUtils.svelte';
+	import {
+		filetoURL,
+		getLocalEvent,
+		getLocalEventFromTimezone,
+		imagePreset
+	} from '$lib/clientUtils.svelte';
 
 	let { data }: PageProps & { projects: Collections.Projects[] } = $props();
 	let events = $derived(data.events);
@@ -50,10 +55,19 @@
 	});
 
 	// Sort event list so that the local event is first
-	let localEvent = $derived(getLocalEvent(events));
-	let sortedEvents = $derived(
-		[events[localEvent], ...events.filter((_, i) => i !== localEvent)].filter(Boolean)
-	);
+	// let localEvent = $derived(getLocalEvent(events));
+	// svelte-ignore state_referenced_locally
+	let sortedEvents = $state([...events]);
+	// let sortedEvents = $derived(
+	// 	[events[localEvent], ...events.filter((_, i) => i !== localEvent)].filter(Boolean)
+	// );
+	onMount(() => {
+		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		let localEvent = getLocalEventFromTimezone(events, tz);
+		sortedEvents = [events[localEvent], ...events.filter((_, i) => i !== localEvent)].filter(
+			Boolean
+		);
+	});
 </script>
 
 <div class="h-screen overflow-x-auto pb-20" bind:this={scrollContainer}>
@@ -123,43 +137,42 @@
 								<div
 									class="grid content-center justify-items-center gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 								>
-									{#each eventProjects as project (project.id)}
-										<div class="card bg-base-100 w-full max-w-96 overflow-clip shadow-sm">
-											<a href="/projects/{project.slug}">
-												<figure>
-													<img
-														src={filetoURL(project.image, imagePreset.thumbnail)}
-														alt=""
-														class="h-40 w-full object-cover"
-													/>
-												</figure>
-											</a>
-											<div class="card-body">
-												<h2 class="card-title">
-													{project.title}
-												</h2>
-												<div class="relative w-full">
-													<div class="gap-2 pr-2 md:flex md:overflow-y-auto">
-														{#each project.tags as tag}
-															<span class="badge badge-sm shrink-0">
-																{tag}
-															</span>
-														{/each}
+									{#each eventProjects as project}
+										{@const imgSrc = filetoURL(project.image as string, imagePreset.thumbnail)}
+										{#key `${season}-${event.slug}-${project.slug}`}
+											<div class="card bg-base-100 w-full max-w-96 overflow-clip shadow-sm">
+												<a href="/projects/{project.slug}">
+													<figure>
+														<img src={imgSrc} alt="" class="h-40 w-full object-cover" />
+													</figure>
+												</a>
+												<div class="card-body">
+													<h2 class="card-title">
+														{project.title}
+													</h2>
+													<div class="relative w-full">
+														<div class="gap-2 pr-2 md:flex md:overflow-y-auto">
+															{#each project.tags as tag}
+																<span class="badge badge-sm shrink-0">
+																	{tag}
+																</span>
+															{/each}
+														</div>
+														{#if project.tags?.length > 1}
+															<div
+																class=" absolute top-0 right-0 z-10 hidden h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5 md:block"
+															></div>
+														{/if}
 													</div>
-													{#if project.tags?.length > 1}
-														<div
-															class=" absolute top-0 right-0 z-10 hidden h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5 md:block"
-														></div>
-													{/if}
-												</div>
-												<p>{project.subtitle}</p>
-												<div class="card-actions justify-end">
-													<a href="/projects/{project.slug}" class="btn btn-secondary"
-														>View Project</a
-													>
+													<p>{project.subtitle}</p>
+													<div class="card-actions justify-end">
+														<a href="/projects/{project.slug}" class="btn btn-secondary"
+															>View Project</a
+														>
+													</div>
 												</div>
 											</div>
-										</div>
+										{/key}
 									{/each}
 								</div>
 							{/each}
