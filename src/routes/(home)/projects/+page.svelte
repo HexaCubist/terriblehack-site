@@ -33,7 +33,6 @@
 
 		return rect.bottom > 0 && rect.right > 0 && rect.left < windowWidth && rect.top < windowHeight;
 	}
-	$effect(() => console.log('visibleSeason', visibleSeason));
 
 	let scrollContainer: HTMLDivElement | null = $state(null);
 	onMount(() => {
