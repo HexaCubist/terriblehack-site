@@ -49,7 +49,7 @@
 
 {#if locStartDate && countdown && loc && (locStartDate
 		.diffNow()
-		.toMillis() < 0 || Math.floor(countdown.as('month')) < 0)}
+		.toMillis() < 0 || Math.floor(countdown.as('month')) <= 0)}
 	<div class="flex grow flex-col items-center justify-center">
 		<p class="text-xl font-bold lg:text-[4rem]" style:font-variant="tabular-nums">
 			{#if countdown.set({ weeks: 0 }).normalize().weeks > 8}
@@ -63,7 +63,7 @@
 					icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
 					class="mb-[0.2em] inline size-[1em]"
 				></Icon>
-				{countdown.toFormat('w')} Week{countdown.weeks !== 1 ? 's' : ''}
+				{countdown.toFormat('w')} Week{countdown.toFormat('w') !== '1' ? 's' : ''}
 			{:else if countdown.days > 3}
 				<Icon
 					icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
