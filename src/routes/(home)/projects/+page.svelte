@@ -14,10 +14,11 @@
 		getLocalEventFromTimezone,
 		imagePreset
 	} from '$lib/clientUtils.svelte';
+	import { shuffle } from 'fast-shuffle';
 
 	let { data }: PageProps & { projects: Collections.Projects[] } = $props();
 	let events = $derived(data.events);
-	let projects = $derived(data.projects);
+	let projects = $derived(shuffle(data.projects));
 
 	let seasons = $derived([...new Set(projects.map((p) => p.season).sort())].sort().reverse());
 
@@ -113,13 +114,32 @@
 				</div>
 			</div>
 			<div class="lg:col-span-9">
+				<!-- Featured Projects -->
+				<div class="card bg-base-100 container mx-auto -mt-10 mb-4 shadow-sm" id="featured">
+					<div class="card-body lg:mx-10">
+						<div class="bg-base-100 top-0 z-10 max-w-full">
+							<div class="mt-4 mb-4 flex items-center justify-center gap-4">
+								<div class="border-base-300 hidden grow border-b-2 border-dotted sm:block"></div>
+								<h2 class="text-5xl font-bold sm:text-center">Featured Projects ✨</h2>
+								<div class="border-base-300 hidden grow border-b-2 border-dotted sm:block"></div>
+							</div>
+						</div>
+						<div
+							class="grid grid-cols-2 content-center justify-items-center gap-4 md:grid-cols-3 lg:grid-cols-3"
+						>
+							{#key sortedEvents}
+								{#each projects.filter((p) => p.featured && p.image) as project}
+									{#key `featured-${project.slug}`}
+										<ProjectCard {project} />
+									{/key}
+								{/each}
+							{/key}
+						</div>
+					</div>
+				</div>
 				{#each seasons as season, i}
 					{@const seasonProjects = projects.filter((p) => p.season === season && p.image)}
-					<div
-						class="card bg-base-100 container mx-auto mb-4 shadow-sm"
-						class:-mt-10={i === 0}
-						id={season}
-					>
+					<div class="card bg-base-100 container mx-auto mb-4 shadow-sm" id={season}>
 						<div class="card-body lg:mx-10">
 							<div class="bg-base-100 top-0 z-10 max-w-full">
 								<div class="mt-4 mb-4 flex items-center justify-center gap-4">
@@ -134,43 +154,11 @@
 									{season} - {event.name}
 								</h3>
 								<div
-									class="grid content-center justify-items-center gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+									class="grid content-center justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4"
 								>
 									{#each eventProjects as project}
-										{@const imgSrc = filetoURL(project.image as string, imagePreset.thumbnail)}
 										{#key `${season}-${event.slug}-${project.slug}`}
-											<div class="card bg-base-100 w-full max-w-96 overflow-clip shadow-sm">
-												<a href="/projects/{project.slug}">
-													<figure>
-														<img src={imgSrc} alt="" class="h-40 w-full object-cover" />
-													</figure>
-												</a>
-												<div class="card-body">
-													<h2 class="card-title">
-														{project.title}
-													</h2>
-													<div class="relative w-full">
-														<div class="gap-2 pr-2 md:flex md:overflow-y-auto">
-															{#each project.tags as tag}
-																<span class="badge badge-sm shrink-0">
-																	{tag}
-																</span>
-															{/each}
-														</div>
-														{#if project.tags?.length > 1}
-															<div
-																class=" absolute top-0 right-0 z-10 hidden h-full w-4 bg-gradient-to-r from-black/0 to-black opacity-5 md:block"
-															></div>
-														{/if}
-													</div>
-													<p>{project.subtitle}</p>
-													<div class="card-actions justify-end">
-														<a href="/projects/{project.slug}" class="btn btn-secondary"
-															>View Project</a
-														>
-													</div>
-												</div>
-											</div>
+											<ProjectCard {project} />
 										{/key}
 									{/each}
 								</div>
