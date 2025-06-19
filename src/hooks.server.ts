@@ -12,7 +12,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	console.log('Request URL:', event.url.pathname);
 	for (const redirect of redirects) {
 		if (event.url.pathname === redirect.from) {
-			return Response.redirect(redirect.to, 301);
+			return Response.redirect(redirect.to, 307);
 		}
 	}
 
