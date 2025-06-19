@@ -17335,6 +17335,82 @@
       }
     },
     {
+      "collection": "global",
+      "field": "redirects",
+      "type": "json",
+      "schema": {
+        "name": "redirects",
+        "table": "global",
+        "data_type": "json",
+        "default_value": null,
+        "generation_expression": null,
+        "max_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_generated": false,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "has_auto_increment": false,
+        "foreign_key_schema": null,
+        "foreign_key_table": null,
+        "foreign_key_column": null,
+        "comment": null
+      },
+      "meta": {
+        "id": 94,
+        "collection": "global",
+        "field": "redirects",
+        "special": [
+          "cast-json"
+        ],
+        "interface": "list",
+        "options": {
+          "fields": [
+            {
+              "field": "from",
+              "name": "from",
+              "type": "string",
+              "meta": {
+                "field": "from",
+                "width": "half",
+                "type": "string",
+                "required": true,
+                "interface": null
+              }
+            },
+            {
+              "field": "to",
+              "name": "to",
+              "type": "string",
+              "meta": {
+                "field": "to",
+                "width": "half",
+                "type": "string",
+                "required": true,
+                "interface": null
+              }
+            }
+          ],
+          "template": "{{from}} -> {{to}}"
+        },
+        "display": null,
+        "display_options": null,
+        "readonly": false,
+        "hidden": false,
+        "sort": 6,
+        "width": "full",
+        "translations": null,
+        "note": null,
+        "conditions": null,
+        "required": false,
+        "group": null,
+        "validation": null,
+        "validation_message": null
+      }
+    },
+    {
       "collection": "pages",
       "field": "id",
       "type": "integer",
@@ -18384,12 +18460,13 @@
         ],
         "interface": "select-dropdown-m2o",
         "options": {
-          "template": "{{avatar}} {{first_name}} {{last_name}}"
+          "template": "{{avatar}} {{first_name}} ",
+          "enableCreate": false
         },
         "display": "user",
         "display_options": null,
-        "readonly": true,
-        "hidden": true,
+        "readonly": false,
+        "hidden": false,
         "sort": 7,
         "width": "half",
         "translations": null,
@@ -18947,7 +19024,7 @@
                 "field": "Pronouns",
                 "width": "half",
                 "type": "text",
-                "required": true,
+                "required": false,
                 "note": "Pronouns may be displayed publicly or used by our team when referring to your team-members.",
                 "interface": "input",
                 "options": {
@@ -19071,7 +19148,7 @@
         "is_generated": false,
         "is_nullable": true,
         "is_unique": false,
-        "is_indexed": false,
+        "is_indexed": true,
         "is_primary_key": false,
         "has_auto_increment": false,
         "foreign_key_schema": null,
@@ -19140,12 +19217,24 @@
         "options": {
           "choices": [
             {
+              "text": "2021",
+              "value": "2021"
+            },
+            {
               "text": "2023",
               "value": "2023"
             },
             {
               "text": "2024",
               "value": "2024"
+            },
+            {
+              "text": "2025",
+              "value": "2025"
+            },
+            {
+              "text": "2026",
+              "value": "2026"
             }
           ],
           "icon": "date_range"

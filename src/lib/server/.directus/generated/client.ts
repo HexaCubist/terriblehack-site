@@ -266,6 +266,7 @@ export namespace Collections {
     date_updated: Types.Optional<Types.DateTime>;
     site_mode: "post-season" | "active" | "pre-season" | Types.String;
     extra_links: Types.JSON | Types.JSON;
+    redirects: Types.Optional<Types.JSON | Types.JSON>;
   }
 
   /**
@@ -302,7 +303,9 @@ export namespace Collections {
   export interface Projects {
     id: Types.PrimaryKey<Types.UUID>;
     status: "published" | "draft" | "archived" | Types.String;
-    season: Types.Optional<"2024" | "2023" | Types.String>;
+    season: Types.Optional<
+      "2026" | "2025" | "2024" | "2023" | "2021" | Types.String
+    >;
     event: Types.Optional<Types.Integer | Collections.Events>;
     sort: Types.Optional<Types.Integer>;
     user_created: Types.Optional<Types.UUID | Collections.DirectusUser>;
